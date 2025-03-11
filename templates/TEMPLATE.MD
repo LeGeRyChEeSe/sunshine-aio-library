@@ -10,8 +10,8 @@ Your submission must include a `manifest.json` file in the root directory of you
 {
   "name": "Tool Name",
   "slug": "tool-name",
-  "description": "Detailed description of the tool, its features, and its purpose.",
-  "version": "1.0.0",
+  "short-description": "Brief description of the tool",
+  "long-description": "Detailed description of the tool, its features, and its purpose",
   "author": "Author Name / Organization",
   "website": "https://tool-website.com",
   "repository": "https://github.com/author/tool",
@@ -23,45 +23,19 @@ Your submission must include a `manifest.json` file in the root directory of you
   },
   "installation": {
     "type": "executable",
-    "url": "https://download-link.com/tool.exe",
-    "linuxUrl": "",
-    "macOSUrl": "",
     "args": ["--silent", "--install"],
-    "linuxArgs": [],
-    "macOSArgs": [],
     "postInstall": "post-installation-script.ps1",
-    "checksum": "sha256:...",
-    "versionDetection": {
-      "method": "file",
-      "file": "%PROGRAMFILES%\\Tool\\version.txt",
-      "regex": "(\\d+\\.\\d+\\.\\d+)"
-    }
+    "checksum": "sha256:..."
   },
   "uninstallation": {
     "type": "executable",
     "path": "%PROGRAMFILES%\\Tool\\uninstall.exe",
-    "args": ["--silent"],
-    "linuxPath": "",
-    "linuxArgs": [],
-    "macOSPath": "",
-    "macOSArgs": []
+    "args": ["--silent"]
   },
   "configuration": {
     "type": "url",
     "url": "http://localhost:8080/config",
-    "file": "",
-    "format": "",
-    "registryPath": "",
-    "registryKey": ""
-  },
-  "updates": {
-    "checkUrl": "https://api.github.com/repos/author/tool/releases/latest",
-    "versionRegex": "v(\\d+\\.\\d+\\.\\d+)",
-    "changelogUrl": ""
-  },
-  "rating": {
-    "average": 4.5,
-    "count": 120
+    "file": "config.json"
   },
   "screenshots": [
     "screenshots/screenshot1.png",
@@ -75,103 +49,67 @@ Your submission must include a `manifest.json` file in the root directory of you
 
 ### General Information
 
-*   **`name`** (required): The full name of the tool. Be descriptive and clear.
-*   **`slug`** (required): A unique identifier for the tool, in lowercase, with hyphens as separators (e.g., `tool-name`). This identifier is used in the tool's URL and must not change.
-*   **`description`** (required): A complete description of the tool. Explain what it does, what it is for, and what its advantages are. Feel free to be detailed.
-*   **`version`** (required): The current version of the tool, following the semantic versioning format (e.g., `1.0.0`, `2.3.1-beta`).
-*   **`author`** (required): The name of the tool's author, or the organization that maintains it.
-*   **`website`** (optional): The URL of the tool's official website (if applicable).
-*   **`repository`** (required): The URL of the tool's source code repository (e.g., GitHub, GitLab, Bitbucket).
-*   **`tags`** (required): A list of keywords describing the tool. Use relevant terms to facilitate searching.
-*   **`icon`** (required): The relative path to the application's icon in the repository.
+* **`name`** (required): Le nom complet de l'outil.
+* **`slug`** (required): Un identifiant unique pour l'outil, en minuscules, avec des tirets comme séparateurs.
+* **`short-description`** (required): Une brève description de l'outil.
+* **`long-description`** (optional): Une description détaillée de l'outil, ses fonctionnalités et son but.
+* **`author`** (required): Le nom de l'auteur de l'outil ou de l'organisation qui le maintient.
+* **`website`** (optional): L'URL du site web officiel de l'outil.
+* **`repository`** (required): L'URL du dépôt du code source de l'outil.
+* **`tags`** (required): Une liste de mots-clés décrivant l'outil.
 
 ### Compatibility
 
-*   **`compatibility`** (required):
-    *   **`sunshine`** (required): `true` if the tool is compatible with Sunshine, `false` otherwise.
-    *   **`apollo`** (required): `true` if the tool is compatible with Apollo, `false` otherwise.
-    *   **`platforms`** (required): List of supported operating systems (`"windows"`, `"linux"`, `"macos"`).
+* **`compatibility`** (required):
+    * **`sunshine`** (required): `true` si l'outil est compatible avec Sunshine.
+    * **`apollo`** (required): `true` si l'outil est compatible avec Apollo.
+    * **`platforms`** (required): Liste des systèmes d'exploitation supportés.
 
 ### Installation
 
-*   **`installation`** (required):
-    *   **`type`** (required): The type of installation. Possible values: `"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`.
-    *   **`url`** (required if `type` is `"executable"`, `"zip"`, or `"msi"`): The direct download URL for Windows.
-    *   **`linuxUrl`** (required if `platforms` includes `"linux"` and if `type` is `"executable"`, `"zip"`, or `"msi"`): The direct download URL for Linux.
-    *   **`macOSUrl`** (required if `platforms` includes `"macos"` and if `type` is `"executable"`, `"zip"`, or `"msi"`): The direct download URL for macOS.
-    *   **`args`** (optional): Command-line arguments for the installation (Windows).
-    *   **`linuxArgs`** (optional): Command-line arguments for the installation (Linux).
-    *   **`macOSArgs`** (optional): Command-line arguments for the installation (macOS).
-    *   **`postInstall`** (optional): Relative path to a script to be executed after installation (e.g., `.ps1` for PowerShell, `.sh` for Bash).
-    *   **`checksum`** (optional): Checksum to verify the integrity of the downloaded file (e.g., `sha256:...`).
-    *   **`versionDetection`** (required): How to detect the installed version:
-        *   **`method`** (required): Detection method. Possible values: `"file"` (read a file), `"registry"` (read the Windows registry).
-        *   **`file`** (required if `method` is `"file"`): Full path to the file containing the version.
-        *   **`registryPath`** (required if `method` is `"registry"`): Path to the registry key.
-        *   **`registryKey`** (required if `method` is `"registry"`): Name of the registry value.
-        *   **`regex`** (required): Regular expression to extract the version from the file or registry value.
+* **`installation`** (required):
+    * **`type`** (required): Le type d'installation (`"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`).
+    * **`args`** (optional): Arguments en ligne de commande pour l'installation.
+    * **`postInstall`** (optional): Chemin relatif vers un script à exécuter après l'installation.
+    * **`checksum`** (optional): Somme de contrôle pour vérifier l'intégrité du fichier téléchargé.
 
 ### Uninstallation
 
-*   **`uninstallation`** (required):
-    *   **`type`** (required): The type of uninstallation. Possible values: `"executable"`, `"script"`.
-    *   **`path`** (required if `type` is `"executable"`): Full path to the uninstallation executable (Windows).
-    *   **`args`** (optional): Command-line arguments for uninstallation (Windows).
-    *   **`linuxPath`** (required if `platforms` includes `"linux"` and `type` is `"executable"`): Full path to the uninstallation executable (Linux).
-    *   **`linuxArgs`** (optional): Command-line arguments for uninstallation (Linux).
-    *   **`macOSPath`** (required if `platforms` includes `"macos"` and `type` is `"executable"`): Full path to the uninstallation executable (macOS).
-    *   **`macOSArgs`** (optional): Command-line arguments for uninstallation (macOS).
+* **`uninstallation`** (required):
+    * **`type`** (required): Le type de désinstallation (`"executable"`, `"script"`).
+    * **`path`** (required): Chemin complet vers l'exécutable de désinstallation.
+    * **`args`** (optional): Arguments en ligne de commande pour la désinstallation.
 
 ### Configuration
 
-*   **`configuration`** (required):
-    *   **`type`** (required): Type of configuration. Possible values: `"url"`, `"file"`, `"script"`, `"registry"`.
-    *   **`url`** (required if `type` is `"url"`): URL of the configuration interface.
-    *   **`file`** (required if `type` is `"file"`): Full path to the configuration file.
-    *   **`format`** (required if `type` is `"file"`): Format of the configuration file (`"json"`, `"ini"`, `"properties"`).
-    *   **`registryPath`** (required if `type` is `"registry"`): Path to the registry key.
-    *   **`registryKey`** (required if `type` is `"registry"`): Name of the registry value.
+* **`configuration`** (optional):
+    * **`type`** (optional): Type de configuration (`"url"`, `"file"`, `"script"`, `"registry"`).
+    * **`url`** (optional): URL de l'interface de configuration.
+    * **`file`** (optional): Chemin complet vers le fichier de configuration.
 
-### Updates
+### Screenshots et Icon
 
-*   **`updates`** (optional):
-    *   **`checkUrl`** (required if `updates` is present): URL to check for the availability of an update (e.g., GitHub API).
-    *   **`versionRegex`** (required if `updates` is present): Regular expression to extract the latest version.
-    *   **`changelogUrl`** (optional): URL to the changelog.
+* **`screenshots`** (optional): Un tableau de chemins relatifs vers les captures d'écran de l'outil.
+* **`icon`** (optional): Le chemin relatif vers l'icône de l'outil.
 
-### Rating (optional)
+## Structure du dossier de l'outil
 
-*   **`rating`** (optional):
-    *   **`average`** : Average rating (e.g., `4.5`).
-    *   **`count`** : Total number of ratings.
-
-### Screenshots and Icon
-
-*   **`screenshots`** (optional): An array of relative paths to screenshots of the tool. Screenshots should be placed in a `screenshots` subfolder next to the `manifest.json` file.
-
-## Tool Folder
-
-The structure of your tool folder should be as follows:
+La structure de votre dossier d'outil doit être la suivante :
 
 ```
 tool-name/
 ├── manifest.json
-├── icon.png
-├── screenshots/
+├── icon.png (optional)
+├── screenshots/ (optional)
 │   ├── screenshot1.png
 │   └── screenshot2.png
-└── README.md (optional, but recommended)
+└── README.md (optional)
 ```
-
-*   `manifest.json`: The metadata file (required).
-*   `icon.png`: An icon for the tool (required, PNG format, recommended size: 256x256 pixels).
-*   `screenshots/`: A folder containing screenshots (optional).
-*   `README.md`: A README file specific to the tool (optional, but recommended).
 
 ## Validation
 
-Before submitting your tool, make sure your `manifest.json` file is valid using a JSON Schema validator. You can use online tools like [https://www.jsonschemavalidator.net/](https://www.jsonschemavalidator.net/) or code editor extensions. The JSON schema for `manifest.json` will be available in the `templates` folder of the `sunshine-aio-library` repository.
+Avant de soumettre votre outil, assurez-vous que votre fichier `manifest.json` est valide en utilisant un validateur de schéma JSON. Le schéma JSON pour `manifest.json` sera disponible dans le dossier `templates` du dépôt `sunshine-aio-library`.
 
-## Submission
+## Soumission
 
-To submit your tool, create a pull request on the `sunshine-aio-library` GitHub repository. Your submission will be reviewed by moderators before being accepted.
+Pour soumettre votre outil, créez une pull request sur le dépôt GitHub `sunshine-aio-library`. Votre soumission sera examinée par les modérateurs avant d'être acceptée.

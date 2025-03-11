@@ -1,0 +1,35 @@
+{
+  "name": "Sunshine",
+  "slug": "sunshine",
+  "short-description": "Self-hosted game stream host for Moonlight.",
+  "long-description": "Sunshine est un serveur de streaming de jeux auto-hébergé pour Moonlight. Offrant une faible latence, des capacités de serveur de jeu en cloud avec prise en charge des GPU AMD, Intel et Nvidia pour l'encodage matériel. L'encodage logiciel est également disponible. Vous pouvez vous connecter à Sunshine depuis n'importe quel client Moonlight sur une variété d'appareils. Une interface Web est fournie pour permettre la configuration et le jumelage des clients depuis votre navigateur Web préféré. Jumelez depuis le serveur local ou n'importe quel appareil mobile.",
+  "author": "LizardByte",
+  "website": "http://app.lizardbyte.dev/Sunshine/",
+  "repository": "https://github.com/LizardByte/Sunshine",
+  "tags": ["game-streaming-server"],
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "args": [],
+    "postInstall": "",
+    "checksum": ""
+  },
+  "uninstallation": {
+    "type": "executable",
+    "path": "",
+    "args": []
+  },
+  "configuration": {
+    "type": "url",
+    "url": "https://localhost:47990/",
+    "file": ""
+  },
+  "screenshots": [
+    "screenshots/screenshot1.png"
+  ],
+  "icon": "icon.png"
+} 

@@ -1,0 +1,33 @@
+{
+  "name": "Example Tool",
+  "slug": "example-tool",
+  "short-description": "This is an example tool for Sunshine-AIO library.",
+  "long-description": "",
+  "author": "Roo",
+  "website": "",
+  "repository": "https://github.com/author/example-tool",
+  "tags": ["example"],
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "args": [],
+    "postInstall": "",
+    "checksum": ""
+  },
+  "uninstallation": {
+    "type": "executable",
+    "path": "",
+    "args": []
+  },
+  "configuration": {
+    "type": "",
+    "url": "",
+    "file": ""
+  },
+  "screenshots": [],
+  "icon": ""
+}

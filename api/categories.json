@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-10T17:05:34.244623",
+  "total_categories": 1,
+  "categories": {
+    "utilities/system-tools": {
+      "name": "Utilities",
+      "subcategory": "System Tools",
+      "full_path": "utilities/system-tools",
+      "tools": [
+        {
+          "id": "artemis-android",
+          "name": "artemis-android",
+          "description": "Android game streaming client for Windows PC to Android device with custom virtual controls and gamepad support",
+          "verification_status": "pending",
+          "score": 0,
+          "stars": 0
+        },
+        {
+          "id": "Apollo",
+          "name": "Apollo",
+          "description": "Self-hosted desktop streaming host for games and applications with HDR support and low-latency streaming",
+          "verification_status": "pending",
+          "score": 0,
+          "stars": 0
+        }
+      ],
+      "stats": {
+        "total": 2,
+        "verified": 0,
+        "average_score": 0.0,
+        "total_stars": 0,
+        "languages": [
+          "C++",
+          "Java"
+        ],
+        "licenses": [
+          "GPL-3.0"
+        ]
+      }
+    }
+  }
+}

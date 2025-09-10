@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sunshine-aio/library/schemas/category.json",
+  "title": "Tool Category Definition",
+  "description": "Schema defining tool categories and their structure",
+  "type": "object",
+  "properties": {
+    "categories": {
+      "type": "object",
+      "properties": {
+        "automation": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "Automation"},
+            "description": {"type": "string", "const": "Tools for automating development and deployment processes"},
+            "icon": {"type": "string", "const": "🚀"},
+            "subcategories": {
+              "type": "object",
+              "properties": {
+                "build-tools": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Build Tools"},
+                    "description": {"type": "string", "const": "Tools for building and compiling applications"}
+                  }
+                },
+                "deployment": {
+                  "type": "object", 
+                  "properties": {
+                    "name": {"type": "string", "const": "Deployment"},
+                    "description": {"type": "string", "const": "Tools for deploying applications and services"}
+                  }
+                },
+                "ci-cd": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "CI/CD"},
+                    "description": {"type": "string", "const": "Continuous integration and deployment tools"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "testing": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "Testing"},
+            "description": {"type": "string", "const": "Tools for testing applications and ensuring quality"},
+            "icon": {"type": "string", "const": "🧪"},
+            "subcategories": {
+              "type": "object",
+              "properties": {
+                "unit-testing": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Unit Testing"},
+                    "description": {"type": "string", "const": "Tools for unit testing individual components"}
+                  }
+                },
+                "integration-testing": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Integration Testing"},
+                    "description": {"type": "string", "const": "Tools for testing component integration"}
+                  }
+                },
+                "performance": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Performance Testing"},
+                    "description": {"type": "string", "const": "Tools for performance and load testing"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "utilities": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "Utilities"},
+            "description": {"type": "string", "const": "General purpose utility tools for development"},
+            "icon": {"type": "string", "const": "🛠️"},
+            "subcategories": {
+              "type": "object",
+              "properties": {
+                "file-management": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "File Management"},
+                    "description": {"type": "string", "const": "Tools for managing files and directories"}
+                  }
+                },
+                "system-tools": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "System Tools"},
+                    "description": {"type": "string", "const": "Tools for system administration and monitoring"}
+                  }
+                },
+                "network": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Network"},
+                    "description": {"type": "string", "const": "Tools for network analysis and management"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "development": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "Development"},
+            "description": {"type": "string", "const": "Tools for software development and debugging"},
+            "icon": {"type": "string", "const": "💻"},
+            "subcategories": {
+              "type": "object",
+              "properties": {
+                "debugging": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Debugging"},
+                    "description": {"type": "string", "const": "Tools for debugging and troubleshooting"}
+                  }
+                },
+                "profiling": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Profiling"},
+                    "description": {"type": "string", "const": "Tools for performance profiling and analysis"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "Security"},
+            "description": {"type": "string", "const": "Tools for security analysis and vulnerability scanning"},
+            "icon": {"type": "string", "const": "🔒"},
+            "subcategories": {
+              "type": "object",
+              "properties": {
+                "scanning": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string", "const": "Scanning"},
+                    "description": {"type": "string", "const": "Tools for security scanning and vulnerability detection"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

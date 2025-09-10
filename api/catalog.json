@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-10T17:05:34.244511",
+  "total_tools": 2,
+  "tools": [
+    {
+      "id": "artemis-android",
+      "name": "artemis-android",
+      "description": "Android game streaming client for Windows PC to Android device with custom virtual controls and gamepad support",
+      "category": "utilities/system-tools",
+      "subcategory": "streaming-client",
+      "tags": [
+        "android",
+        "streaming",
+        "gaming",
+        "mobile",
+        "gamepad",
+        "moonlight",
+        "client"
+      ],
+      "repository": "https://github.com/ClassicOldSong/moonlight-android",
+      "license": "GPL-3.0",
+      "platforms": [
+        "Linux"
+      ],
+      "language": "Java",
+      "verification": {
+        "status": "pending",
+        "score": 0
+      },
+      "metrics": {
+        "stars": 0,
+        "forks": 0
+      },
+      "maintainer": {
+        "name": "ClassicOldSong",
+        "github": "ClassicOldSong"
+      },
+      "added_date": "2025-01-15",
+      "contributed_by": "claude-assistant",
+      "_metadata": {
+        "file_path": "utilities/system-tools/artemis-android.json",
+        "category_path": "utilities/system-tools",
+        "file_name": "artemis-android.json",
+        "last_modified": "2025-09-10T17:03:17.614619"
+      }
+    },
+    {
+      "id": "Apollo",
+      "name": "Apollo",
+      "description": "Self-hosted desktop streaming host for games and applications with HDR support and low-latency streaming",
+      "category": "utilities/system-tools",
+      "subcategory": "streaming",
+      "tags": [
+        "streaming",
+        "gaming",
+        "desktop",
+        "hdr",
+        "self-hosted",
+        "moonlight",
+        "gpu"
+      ],
+      "repository": "https://github.com/ClassicOldSong/Apollo",
+      "license": "GPL-3.0",
+      "platforms": [
+        "Windows",
+        "Linux",
+        "macOS"
+      ],
+      "language": "C++",
+      "verification": {
+        "status": "pending",
+        "score": 0
+      },
+      "metrics": {
+        "stars": 0,
+        "forks": 0
+      },
+      "maintainer": {
+        "name": "ClassicOldSong",
+        "github": "ClassicOldSong"
+      },
+      "added_date": "2025-01-15",
+      "contributed_by": "claude-assistant",
+      "_metadata": {
+        "file_path": "utilities/system-tools/apollo.json",
+        "category_path": "utilities/system-tools",
+        "file_name": "apollo.json",
+        "last_modified": "2025-09-10T17:02:57.145193"
+      }
+    }
+  ]
+}

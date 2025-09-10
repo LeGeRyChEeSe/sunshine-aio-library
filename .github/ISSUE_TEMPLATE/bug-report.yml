@@ -1,0 +1,136 @@
+name: 🐛 Bug Report
+description: Report an issue with the tool registry or validation system
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+        
+        Thanks for taking the time to report a bug! This helps us improve the 
+        Sunshine-AIO Community Library for everyone.
+
+  - type: dropdown
+    id: bug-type
+    attributes:
+      label: Bug Type
+      description: What type of issue are you experiencing?
+      options:
+        - Tool validation error
+        - API catalog issue
+        - Documentation problem
+        - Search functionality
+        - Website/interface issue
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug
+      placeholder: "Describe what happened and what you expected to happen"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: "Describe what you expected to see or happen"
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: "Describe what actually happened"
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool Name (if applicable)
+      description: Name of the specific tool related to this bug
+      placeholder: "my-tool-name"
+
+  - type: input
+    id: api-endpoint
+    attributes:
+      label: API Endpoint (if applicable)
+      description: Specific API endpoint or URL related to the issue
+      placeholder: "/api/catalog.json"
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Error Message
+      description: Full error message or logs (if any)
+      placeholder: |
+        Copy and paste the complete error message here.
+        Include stack traces if available.
+      render: shell
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this issue?
+      options:
+        - Low - Minor inconvenience
+        - Medium - Affects functionality
+        - High - Breaks important features
+        - Critical - System unusable
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Information about your environment
+      placeholder: |
+        - OS: [e.g. Windows 10, Ubuntu 20.04, macOS 12.0]
+        - Browser: [e.g. Chrome 95, Firefox 94, Safari 15]
+        - Python version: [e.g. 3.9.7]
+        - Any relevant tool versions
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        - Screenshots (if applicable)
+        - Related issues or PRs
+        - Workarounds you've tried
+        - Any other relevant information
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I have searched existing issues to ensure this isn't a duplicate
+          required: true
+        - label: I have provided all the requested information above
+          required: true
+        - label: I can reproduce this issue consistently
+          required: false

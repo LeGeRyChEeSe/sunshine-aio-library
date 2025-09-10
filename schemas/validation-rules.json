@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sunshine-aio/library/schemas/validation-rules.json",
+  "title": "Validation Rules Configuration",
+  "description": "Custom validation rules and thresholds for tool entries",
+  "type": "object",
+  "properties": {
+    "quality_thresholds": {
+      "type": "object",
+      "properties": {
+        "minimum_stars": {
+          "type": "integer",
+          "default": 10,
+          "description": "Minimum GitHub stars for automatic verification"
+        },
+        "minimum_score": {
+          "type": "integer", 
+          "default": 60,
+          "description": "Minimum quality score for verified status"
+        },
+        "max_days_since_commit": {
+          "type": "integer",
+          "default": 365,
+          "description": "Maximum days since last commit for active status"
+        }
+      }
+    },
+    "url_validation": {
+      "type": "object",
+      "properties": {
+        "allowed_domains": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": [
+            "github.com",
+            "docs.github.com", 
+            "readthedocs.io",
+            "gitbook.io"
+          ],
+          "description": "Allowed domains for documentation URLs"
+        },
+        "required_status_codes": {
+          "type": "array",
+          "items": {"type": "integer"},
+          "default": [200, 301, 302],
+          "description": "Acceptable HTTP status codes for URL validation"
+        }
+      }
+    },
+    "content_validation": {
+      "type": "object",
+      "properties": {
+        "forbidden_words": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": ["hack", "crack", "exploit", "malware"],
+          "description": "Words that indicate potentially malicious tools"
+        },
+        "required_readme_sections": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": ["installation", "usage", "license"],
+          "description": "Required sections in README for quality scoring"
+        }
+      }
+    },
+    "scoring_weights": {
+      "type": "object",
+      "properties": {
+        "stars": {"type": "number", "default": 0.3},
+        "forks": {"type": "number", "default": 0.2},
+        "recent_activity": {"type": "number", "default": 0.2},
+        "documentation": {"type": "number", "default": 0.15},
+        "license": {"type": "number", "default": 0.1},
+        "community": {"type": "number", "default": 0.05}
+      },
+      "description": "Weights for quality score calculation"
+    },
+    "automation_rules": {
+      "type": "object",
+      "properties": {
+        "auto_verify_threshold": {
+          "type": "integer",
+          "default": 85,
+          "description": "Score threshold for automatic verification"
+        },
+        "auto_deprecate_days": {
+          "type": "integer",
+          "default": 730,
+          "description": "Days without activity before automatic deprecation"
+        },
+        "review_required_score": {
+          "type": "integer",
+          "default": 50,
+          "description": "Score below which manual review is required"
+        }
+      }
+    }
+  }
+}

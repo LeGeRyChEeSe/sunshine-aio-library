@@ -1,0 +1,91 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-10T17:05:34.244670",
+  "overview": {
+    "total_tools": 2,
+    "verified_tools": 0,
+    "pending_tools": 2,
+    "failed_tools": 0,
+    "total_stars": 0,
+    "total_forks": 0,
+    "average_score": 0.0
+  },
+  "categories": {
+    "utilities/system-tools": {
+      "count": 2,
+      "average_score": 0,
+      "total_stars": 0
+    }
+  },
+  "languages": {
+    "Java": {
+      "count": 1,
+      "average_score": 0
+    },
+    "C++": {
+      "count": 1,
+      "average_score": 0
+    }
+  },
+  "licenses": {
+    "GPL-3.0": 2
+  },
+  "platforms": {
+    "Linux": 2,
+    "Windows": 1,
+    "macOS": 1
+  },
+  "verification_statuses": {
+    "pending": 2
+  },
+  "quality_distribution": {
+    "excellent": 0,
+    "good": 0,
+    "fair": 0,
+    "poor": 2
+  },
+  "activity_analysis": {
+    "active": 0,
+    "moderate": 0,
+    "inactive": 2
+  },
+  "top_tools": {
+    "by_stars": [
+      {
+        "id": "artemis-android",
+        "name": "artemis-android",
+        "category": "utilities/system-tools",
+        "stars": 0,
+        "score": 0,
+        "last_commit": null
+      },
+      {
+        "id": "Apollo",
+        "name": "Apollo",
+        "category": "utilities/system-tools",
+        "stars": 0,
+        "score": 0,
+        "last_commit": null
+      }
+    ],
+    "by_score": [
+      {
+        "id": "artemis-android",
+        "name": "artemis-android",
+        "category": "utilities/system-tools",
+        "stars": 0,
+        "score": 0,
+        "last_commit": null
+      },
+      {
+        "id": "Apollo",
+        "name": "Apollo",
+        "category": "utilities/system-tools",
+        "stars": 0,
+        "score": 0,
+        "last_commit": null
+      }
+    ],
+    "by_recent_activity": []
+  }
+}

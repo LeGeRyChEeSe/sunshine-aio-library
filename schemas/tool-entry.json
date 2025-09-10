@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sunshine-aio/library/schemas/tool-entry.json",
+  "title": "Sunshine-AIO Tool Entry",
+  "description": "Schema for a tool entry in the Sunshine-AIO community library",
+  "type": "object",
+  "required": ["name", "description", "category", "repository", "license"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-_]+$",
+      "minLength": 2,
+      "maxLength": 50,
+      "description": "Tool name (alphanumeric, hyphens, underscores only)"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 150,
+      "description": "Brief description of what the tool does"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "automation/build-tools",
+        "automation/deployment", 
+        "automation/ci-cd",
+        "testing/unit-testing",
+        "testing/integration-testing",
+        "testing/performance",
+        "utilities/file-management",
+        "utilities/system-tools",
+        "utilities/network",
+        "development/debugging",
+        "development/profiling",
+        "security/scanning"
+      ],
+      "description": "Tool category from predefined list"
+    },
+    "subcategory": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "Optional subcategory for more specific classification"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$",
+        "maxLength": 20
+      },
+      "maxItems": 8,
+      "uniqueItems": true,
+      "description": "Tags for better searchability"
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://github\\.com/[^/]+/[^/]+/?$",
+      "description": "GitHub repository URL"
+    },
+    "documentation": {
+      "type": "string",
+      "format": "uri",
+      "description": "Link to documentation"
+    },
+    "license": {
+      "type": "string",
+      "enum": [
+        "MIT",
+        "Apache-2.0", 
+        "GPL-3.0",
+        "BSD-3-Clause",
+        "ISC",
+        "LGPL-3.0",
+        "MPL-2.0",
+        "Unlicense"
+      ],
+      "description": "Open source license"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Windows", "Linux", "macOS", "Web", "Cross-platform"]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Supported platforms"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "Python", "JavaScript", "TypeScript", "Go", "Rust", 
+        "Java", "C++", "C#", "PHP", "Ruby", "Shell", "Other"
+      ],
+      "description": "Primary programming language"
+    },
+    "maintainer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Maintainer name"
+        },
+        "contact": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email"
+        },
+        "github": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9-]+$",
+          "description": "GitHub username"
+        }
+      },
+      "required": ["name"],
+      "description": "Tool maintainer information"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "stars": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "GitHub stars count"
+        },
+        "forks": {
+          "type": "integer", 
+          "minimum": 0,
+          "description": "GitHub forks count"
+        },
+        "last_commit": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of last commit"
+        }
+      },
+      "description": "Automatically collected metrics"
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pending", "verified", "failed", "deprecated"],
+          "default": "pending",
+          "description": "Verification status"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last verification date"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["automated", "manual", "community"],
+          "description": "Verification method"
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Quality score (0-100)"
+        }
+      },
+      "description": "Verification and quality information"
+    },
+    "added_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when tool was added to registry"
+    },
+    "contributed_by": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-]+$", 
+      "description": "GitHub username of contributor"
+    }
+  },
+  "additionalProperties": false
+}

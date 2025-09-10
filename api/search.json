@@ -1,0 +1,194 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-10T17:05:34.244627",
+  "indexes": {
+    "by_name": {
+      "artemis-android": [
+        "artemis-android"
+      ],
+      "android": [
+        "artemis-android",
+        "artemis-android"
+      ],
+      "game": [
+        "artemis-android"
+      ],
+      "streaming": [
+        "artemis-android",
+        "Apollo",
+        "Apollo"
+      ],
+      "client": [
+        "artemis-android"
+      ],
+      "for": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "windows": [
+        "artemis-android"
+      ],
+      "pc": [
+        "artemis-android"
+      ],
+      "to": [
+        "artemis-android"
+      ],
+      "device": [
+        "artemis-android"
+      ],
+      "with": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "custom": [
+        "artemis-android"
+      ],
+      "virtual": [
+        "artemis-android"
+      ],
+      "controls": [
+        "artemis-android"
+      ],
+      "and": [
+        "artemis-android",
+        "Apollo",
+        "Apollo"
+      ],
+      "gamepad": [
+        "artemis-android"
+      ],
+      "support": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "apollo": [
+        "Apollo"
+      ],
+      "self-hosted": [
+        "Apollo"
+      ],
+      "desktop": [
+        "Apollo"
+      ],
+      "host": [
+        "Apollo"
+      ],
+      "games": [
+        "Apollo"
+      ],
+      "applications": [
+        "Apollo"
+      ],
+      "hdr": [
+        "Apollo"
+      ],
+      "low-latency": [
+        "Apollo"
+      ]
+    },
+    "by_tag": {
+      "android": [
+        "artemis-android"
+      ],
+      "streaming": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "gaming": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "mobile": [
+        "artemis-android"
+      ],
+      "gamepad": [
+        "artemis-android"
+      ],
+      "moonlight": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "client": [
+        "artemis-android"
+      ],
+      "desktop": [
+        "Apollo"
+      ],
+      "hdr": [
+        "Apollo"
+      ],
+      "self-hosted": [
+        "Apollo"
+      ],
+      "gpu": [
+        "Apollo"
+      ]
+    },
+    "by_category": {
+      "utilities/system-tools": [
+        "artemis-android",
+        "Apollo"
+      ]
+    },
+    "by_language": {
+      "Java": [
+        "artemis-android"
+      ],
+      "C++": [
+        "Apollo"
+      ]
+    },
+    "by_license": {
+      "GPL-3.0": [
+        "artemis-android",
+        "Apollo"
+      ]
+    },
+    "by_platform": {
+      "Linux": [
+        "artemis-android",
+        "Apollo"
+      ],
+      "Windows": [
+        "Apollo"
+      ],
+      "macOS": [
+        "Apollo"
+      ]
+    }
+  },
+  "filters": {
+    "categories": [
+      "utilities/system-tools"
+    ],
+    "languages": [
+      "C++",
+      "Java"
+    ],
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "platforms": [
+      "Linux",
+      "Windows",
+      "macOS"
+    ],
+    "tags": [
+      "android",
+      "client",
+      "desktop",
+      "gamepad",
+      "gaming",
+      "gpu",
+      "hdr",
+      "mobile",
+      "moonlight",
+      "self-hosted",
+      "streaming"
+    ],
+    "verification_statuses": [
+      "pending"
+    ]
+  }
+}

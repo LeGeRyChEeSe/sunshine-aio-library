@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-10T09:28:10.105911",
+  "catalogs": {
+    "categories.json": {
+      "path": "api/categories.json",
+      "size_bytes": 2232,
+      "size_kb": 2.2,
+      "last_modified": "2025-09-10T09:28:10.101774"
+    },
+    "stats.json": {
+      "path": "api/stats.json",
+      "size_bytes": 2569,
+      "size_kb": 2.5,
+      "last_modified": "2025-09-10T09:28:10.104774"
+    },
+    "search.json": {
+      "path": "api/search.json",
+      "size_bytes": 4343,
+      "size_kb": 4.2,
+      "last_modified": "2025-09-10T09:28:10.102774"
+    },
+    "catalog.json": {
+      "path": "api/catalog.json",
+      "size_bytes": 3786,
+      "size_kb": 3.7,
+      "last_modified": "2025-09-10T09:28:10.101774"
+    }
+  },
+  "api_endpoints": {
+    "main_catalog": "/api/catalog.json",
+    "categories": "/api/categories.json",
+    "search_index": "/api/search.json",
+    "statistics": "/api/stats.json"
+  },
+  "usage": {
+    "search_tools": "GET /api/search.json -> filter by indexes.by_name[query]",
+    "list_categories": "GET /api/categories.json -> categories",
+    "get_stats": "GET /api/stats.json",
+    "browse_all": "GET /api/catalog.json -> tools[]"
+  }
+}

@@ -177,7 +177,7 @@ jobs:
         retention-days: 30
     
     - name: 💾 Commit updated catalogs
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -203,7 +203,7 @@ jobs:
     name: Quality Gate
     runs-on: ubuntu-latest
     needs: [validate]
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: 📥 Checkout repository
@@ -219,17 +219,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install jsonschema requests pyyaml
     
-    - name: 🚨 Quality checks for PR
+    - name: 🚨 Quality checks
       run: |
-        echo "🔍 Running quality checks on changed files..."
-        
-        # Get changed files
-        git fetch origin main
-        changed_files=$(git diff --name-only origin/main...HEAD | grep "\.json$" | grep "^tools/" || true)
-        
-        if [ -z "$changed_files" ]; then
-          echo "ℹ️ No tool files changed in this PR"
-          exit 0
+        echo "🔍 Running quality checks..."
+
+        # Get changed files (for PR) or all files (for manual dispatch)
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "🔍 Running quality checks on changed files..."
+          git fetch origin main
+          changed_files=$(git diff --name-only origin/main...HEAD | grep "\.json$" | grep "^tools/" || true)
+
+          if [ -z "$changed_files" ]; then
+            echo "ℹ️ No tool files changed in this PR"
+            exit 0
+          fi
+        else
+          echo "🔍 Running quality checks on all tool files..."
+          changed_files=$(find tools/ -name "*.json" -type f)
         fi
         
         echo "📋 Changed tool files:"
@@ -259,7 +265,7 @@ jobs:
         echo "✅ All changed files passed validation!"
     
     - name: 💬 Comment on PR
-      if: always()
+      if: always() && github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
         script: |

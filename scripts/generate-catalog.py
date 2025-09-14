@@ -9,13 +9,13 @@ import sys
 import os
 import argparse
 from pathlib import Path
-from typing import Dict, List, Any, Set
+from typing import Dict, List, Any, Set, Optional
 from datetime import datetime
 import hashlib
 
 
 class CatalogGenerator:
-    def __init__(self, tools_dir: Path = None, api_dir: Path = None):
+    def __init__(self, tools_dir: Optional[Path] = None, api_dir: Optional[Path] = None):
         self.tools_dir = tools_dir or Path(__file__).parent.parent / "tools"
         self.api_dir = api_dir or Path(__file__).parent.parent / "api"
         self.api_dir.mkdir(exist_ok=True)

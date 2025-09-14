@@ -48,6 +48,9 @@ temp/
 *.tmp
 *.bak
 
+# Auto-completion backup files
+*.json.backup
+
 # API generated files (keep in repo)
 # api/ - intentionally not ignored
 

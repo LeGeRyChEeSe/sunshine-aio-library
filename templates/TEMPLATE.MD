@@ -23,6 +23,7 @@ Your submission must include a `manifest.json` file in the root directory of you
   },
   "installation": {
     "type": "executable",
+    "executable": "MyTool.exe",
     "args": ["--silent", "--install"],
     "postInstall": "post-installation-script.ps1",
     "checksum": "sha256:..."
@@ -49,52 +50,86 @@ Your submission must include a `manifest.json` file in the root directory of you
 
 ### General Information
 
-* **`name`** (required): Le nom complet de l'outil.
-* **`slug`** (required): Un identifiant unique pour l'outil, en minuscules, avec des tirets comme séparateurs.
-* **`short-description`** (required): Une brève description de l'outil.
-* **`long-description`** (optional): Une description détaillée de l'outil, ses fonctionnalités et son but.
-* **`author`** (required): Le nom de l'auteur de l'outil ou de l'organisation qui le maintient.
-* **`website`** (optional): L'URL du site web officiel de l'outil.
-* **`repository`** (required): L'URL du dépôt du code source de l'outil.
-* **`tags`** (required): Une liste de mots-clés décrivant l'outil.
+* **`name`** (required): Full name of the tool.
+* **`slug`** (required): Unique identifier for the tool, lowercase with hyphens as separators.
+* **`short-description`** (required): Brief description of the tool.
+* **`long-description`** (optional): Detailed description of the tool, its features and purpose.
+* **`author`** (required): Name of the tool author or maintaining organization.
+* **`website`** (optional): URL of the tool's official website.
+* **`repository`** (required): URL of the tool's source code repository.
+* **`tags`** (required): List of keywords describing the tool.
 
 ### Compatibility
 
 * **`compatibility`** (required):
-    * **`sunshine`** (required): `true` si l'outil est compatible avec Sunshine.
-    * **`apollo`** (required): `true` si l'outil est compatible avec Apollo.
-    * **`platforms`** (required): Liste des systèmes d'exploitation supportés.
+    * **`sunshine`** (required): `true` if the tool is compatible with Sunshine.
+    * **`apollo`** (required): `true` if the tool is compatible with Apollo.
+    * **`platforms`** (required): List of supported operating systems.
 
 ### Installation
 
-* **`installation`** (required):
-    * **`type`** (required): Le type d'installation (`"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`).
-    * **`args`** (optional): Arguments en ligne de commande pour l'installation.
-    * **`postInstall`** (optional): Chemin relatif vers un script à exécuter après l'installation.
-    * **`checksum`** (optional): Somme de contrôle pour vérifier l'intégrité du fichier téléchargé.
+* **`installation`** (required): Supports both single-platform and multi-platform configurations:
+
+**Single Platform Format:**
+* **`type`** (required): Installation method type (`"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`, `"package-manager"`).
+* **`url`** (optional): Direct download URL. Use GitHub latest release format: `https://github.com/user/repo/releases/latest/download/filename.ext`
+* **`executable`** (optional): Specific executable or package name (e.g., `Tool.exe`, `Tool.deb`, `Tool.dmg`).
+* **`args`** (optional): Command line arguments for installation.
+* **`postInstall`** (optional): Relative path to post-installation script.
+* **`checksum`** (optional): File checksum for integrity verification.
+* **`silent`** (optional): Silent installation (default: `true`).
+
+**Multi-Platform Format:**
+```json
+"installation": {
+  "platforms": {
+    "windows": {
+      "type": "msi",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-Windows.msi",
+      "executable": "Tool.msi",
+      "args": ["/quiet"],
+      "silent": true
+    },
+    "linux": {
+      "type": "package-manager",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-Linux.deb",
+      "executable": "Tool.deb",
+      "args": ["--force-yes"],
+      "silent": true
+    },
+    "macos": {
+      "type": "portable",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-macOS.dmg",
+      "executable": "Tool.dmg",
+      "silent": false
+    }
+  }
+}
+```
 
 ### Uninstallation
 
 * **`uninstallation`** (required):
-    * **`type`** (required): Le type de désinstallation (`"executable"`, `"script"`).
-    * **`path`** (required): Chemin complet vers l'exécutable de désinstallation.
-    * **`args`** (optional): Arguments en ligne de commande pour la désinstallation.
+    * **`type`** (required): Uninstallation method type (`"executable"`, `"script"`, `"registry"`, `"manual"`).
+    * **`path`** (optional): Full path to the uninstaller executable or script.
+    * **`args`** (optional): Command line arguments for uninstallation.
 
 ### Configuration
 
-* **`configuration`** (optional):
-    * **`type`** (optional): Type de configuration (`"url"`, `"file"`, `"script"`, `"registry"`).
-    * **`url`** (optional): URL de l'interface de configuration.
-    * **`file`** (optional): Chemin complet vers le fichier de configuration.
+* **`configuration`** (required):
+    * **`type`** (optional): Configuration method type (`""`, `"url"`, `"file"`, `"script"`, `"registry"`, `"none"`).
+    * **`url`** (optional): URL of the configuration interface.
+    * **`file`** (optional): Configuration file path.
+    * **`script`** (optional): Configuration script path.
 
-### Screenshots et Icon
+### Screenshots and Icon
 
-* **`screenshots`** (optional): Un tableau de chemins relatifs vers les captures d'écran de l'outil.
-* **`icon`** (optional): Le chemin relatif vers l'icône de l'outil.
+* **`screenshots`** (optional): Array of relative paths to tool interface screenshots.
+* **`icon`** (optional): Relative path to the tool icon.
 
-## Structure du dossier de l'outil
+## Tool Directory Structure
 
-La structure de votre dossier d'outil doit être la suivante :
+Your tool directory structure should be as follows:
 
 ```
 tool-name/
@@ -108,8 +143,8 @@ tool-name/
 
 ## Validation
 
-Avant de soumettre votre outil, assurez-vous que votre fichier `manifest.json` est valide en utilisant un validateur de schéma JSON. Le schéma JSON pour `manifest.json` sera disponible dans le dossier `templates` du dépôt `sunshine-aio-library`.
+Before submitting your tool, ensure your `manifest.json` file is valid by using a JSON schema validator. The JSON schema for `manifest.json` is available in the `schemas` folder of the `sunshine-aio-library` repository.
 
-## Soumission
+## Submission
 
-Pour soumettre votre outil, créez une pull request sur le dépôt GitHub `sunshine-aio-library`. Votre soumission sera examinée par les modérateurs avant d'être acceptée.
+To submit your tool, create a pull request on the `sunshine-aio-library` GitHub repository. Your submission will be reviewed by moderators before being accepted.

@@ -20,17 +20,154 @@ The main schema for tool entries is defined in [`schemas/tool-entry.json`](../sc
 ### Required Fields
 
 #### `name` (string)
-- **Pattern**: `^[a-zA-Z0-9-_]+$`
+- **Pattern**: `^[a-zA-Z0-9\\s\\-_]+$`
 - **Length**: 2-50 characters
-- **Description**: Tool name using only alphanumeric characters, hyphens, and underscores
+- **Description**: Tool name (alphanumeric, spaces, hyphens, underscores allowed)
+- **Example**: `"Docker Compose Validator"`
+
+#### `slug` (string)
+- **Pattern**: `^[a-z0-9-]+$`
+- **Length**: 2-50 characters
+- **Description**: Unique identifier for the tool (lowercase, hyphens only)
 - **Example**: `"docker-compose-validator"`
 
-#### `description` (string)
-- **Length**: 10-150 characters
-- **Description**: Brief, clear description of what the tool does
-- **Example**: `"A powerful CLI tool for validating Docker Compose files with comprehensive error reporting"`
+#### `repository` (string)
+- **Format**: URI
+- **Pattern**: `^https://github\\.com/[^/]+/[^/]+/?$`
+- **Description**: GitHub repository URL
+- **Example**: `"https://github.com/username/repository"`
 
-#### `category` (string)
+#### `compatibility` (object)
+**Required properties:**
+- `sunshine` (boolean): Compatible with Sunshine streaming host
+- `apollo` (boolean): Compatible with Apollo streaming host
+- `platforms` (array): Supported operating systems (lowercase)
+  - **Items**: `"windows"`, `"linux"`, `"macos"`, `"web"`
+  - **Min Items**: 1
+  - **Unique Items**: true
+
+**Example**:
+```json
+{
+  "sunshine": true,
+  "apollo": false,
+  "platforms": ["windows", "linux"]
+}
+```
+
+#### `installation` (object)
+The installation object supports both single-platform and multi-platform configurations:
+
+**Single Platform Format:**
+- `type` (string, required): Installation method
+  - **Enum**: `"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`, `"package-manager"`
+- `url` (string): Direct download URL (defaults to latest GitHub release)
+- `executable` (string): Specific executable or package name
+- `args` (array): Command line arguments for installation
+- `postInstall` (string): Relative path to post-installation script
+- `checksum` (string): File checksum for integrity verification (empty string allowed)
+- `silent` (boolean): Whether installation should run silently (default: true)
+
+**Multi-Platform Format:**
+- `platforms` (object, required): Platform-specific configurations
+  - `windows` (object): Windows installation configuration
+  - `linux` (object): Linux installation configuration
+  - `macos` (object): macOS installation configuration
+
+Each platform object supports the same properties as the single platform format.
+
+**Important**: For dynamic updates, use GitHub's latest release URLs without version numbers:
+- `https://github.com/user/repo/releases/latest/download/Tool-Windows.exe`
+- `https://github.com/user/repo/releases/latest/download/Tool-Linux.deb`
+- `https://github.com/user/repo/releases/latest/download/Tool-macOS.dmg`
+
+**Single Platform Example:**
+```json
+{
+  "type": "executable",
+  "executable": "MyTool.exe",
+  "args": ["/S"],
+  "silent": true
+}
+```
+
+**Multi-Platform Example:**
+```json
+{
+  "platforms": {
+    "windows": {
+      "type": "msi",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-Windows.msi",
+      "executable": "Tool.msi",
+      "args": ["/quiet"],
+      "silent": true
+    },
+    "linux": {
+      "type": "package-manager",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-Linux.deb",
+      "executable": "Tool.deb",
+      "args": ["--force-yes"],
+      "silent": true
+    },
+    "macos": {
+      "type": "portable",
+      "url": "https://github.com/user/repo/releases/latest/download/Tool-macOS.dmg",
+      "executable": "Tool.dmg",
+      "args": [],
+      "silent": false
+    }
+  }
+}
+```
+
+#### `uninstallation` (object)
+**Required properties:**
+- `type` (string): Uninstallation method
+  - **Enum**: `"executable"`, `"script"`, `"registry"`, `"manual"`
+
+**Optional properties:**
+- `path` (string): Path to uninstaller executable or script
+- `args` (array): Command line arguments for uninstallation
+
+**Example**:
+```json
+{
+  "type": "registry",
+  "args": ["/S"]
+}
+```
+
+#### `configuration` (object)
+**Required properties:**
+- `type` (string): Configuration method (empty string allowed)
+  - **Enum**: `""`, `"url"`, `"file"`, `"script"`, `"registry"`, `"none"`
+
+**Optional properties:**
+- `url` (string): Configuration interface URL
+- `file` (string): Configuration file path
+- `script` (string): Configuration script path
+
+**Example**:
+```json
+{
+  "type": "url",
+  "url": "http://localhost:8080/config"
+}
+```
+
+### Either/Or Required Fields
+
+You must provide either the legacy format OR the new format:
+
+**Legacy Format:**
+- `description` (string): 10-150 characters
+- `category` (string): Predefined category from enum
+- `license` (string): Open source license from approved list
+
+**New Format:**
+- `short-description` (string): 10-100 characters
+
+#### `category` (string) - Legacy Format
 - **Enum**: Predefined category list
 - **Description**: Primary category classification
 - **Available Values**:
@@ -40,7 +177,7 @@ The main schema for tool entries is defined in [`schemas/tool-entry.json`](../sc
     "automation/deployment",
     "automation/ci-cd",
     "testing/unit-testing",
-    "testing/integration-testing", 
+    "testing/integration-testing",
     "testing/performance",
     "utilities/file-management",
     "utilities/system-tools",
@@ -51,20 +188,14 @@ The main schema for tool entries is defined in [`schemas/tool-entry.json`](../sc
   ]
   ```
 
-#### `repository` (string)
-- **Format**: URI
-- **Pattern**: `^https://github\\.com/[^/]+/[^/]+/?$`
-- **Description**: GitHub repository URL
-- **Example**: `"https://github.com/username/repository"`
-
-#### `license` (string)
+#### `license` (string) - Legacy Format
 - **Enum**: Compatible open source licenses
-- **Available Values**: 
+- **Available Values**:
   ```json
   [
     "MIT",
     "Apache-2.0",
-    "GPL-3.0", 
+    "GPL-3.0",
     "BSD-3-Clause",
     "ISC",
     "LGPL-3.0",
@@ -93,7 +224,7 @@ The main schema for tool entries is defined in [`schemas/tool-entry.json`](../sc
 - **Description**: Link to tool documentation
 - **Example**: `"https://username.github.io/repository"`
 
-#### `platforms` (array)
+#### `platforms` (array) - Legacy Format
 - **Items**: Platform names
 - **Available Values**: `["Windows", "Linux", "macOS", "Web", "Cross-platform"]`
 - **Min Items**: 1
@@ -120,10 +251,36 @@ Properties:
 ```json
 {
   "name": "John Doe",
-  "contact": "john@example.com", 
+  "contact": "john@example.com",
   "github": "johndoe"
 }
 ```
+
+#### New Format Optional Fields
+
+#### `short_description` (string)
+- **Length**: 10-100 characters
+- **Description**: Alternative to description (underscore format)
+
+#### `long-description` (string) or `long_description` (string)
+- **Max Length**: 500 characters
+- **Description**: Detailed description of the tool features and purpose
+
+#### `author` (string)
+- **Max Length**: 100 characters
+- **Description**: Tool author or organization name
+
+#### `website` (string)
+- **Format**: URI
+- **Description**: Official website URL
+
+#### `screenshots` (array)
+- **Items**: Relative path strings to screenshot images
+- **Max Items**: 10
+- **Description**: Screenshots of the tool interface
+
+#### `icon` (string)
+- **Description**: Relative path to tool icon image
 
 ### Auto-Generated Fields
 
@@ -132,7 +289,7 @@ These fields are automatically populated and should not be included in manual en
 #### `metrics` (object)
 Automatically collected GitHub metrics:
 - `stars` (integer): GitHub stars count
-- `forks` (integer): GitHub forks count  
+- `forks` (integer): GitHub forks count
 - `last_commit` (string, date): Date of last commit
 
 #### `verification` (object)
@@ -148,20 +305,75 @@ Date when tool was added to registry
 #### `contributed_by` (string)
 GitHub username of contributor
 
-### Complete Example
+### Complete Example (New Format)
 
 ```json
 {
-  "name": "docker-compose-validator",
+  "name": "Docker Compose Validator",
+  "slug": "docker-compose-validator",
+  "short-description": "A powerful CLI tool for validating Docker Compose files",
+  "long_description": "Comprehensive validation tool that checks Docker Compose files for syntax errors, best practices, and security issues with detailed error reporting and suggestions.",
+  "tags": ["docker", "validation", "cli", "yaml"],
+  "repository": "https://github.com/username/docker-compose-validator",
+  "documentation": "https://username.github.io/docker-compose-validator",
+  "author": "John Doe",
+  "website": "https://docker-validator.example.com",
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "url": "https://github.com/username/docker-compose-validator/releases/latest",
+    "args": ["/S"],
+    "silent": true,
+    "checksum": "sha256:abc123..."
+  },
+  "uninstallation": {
+    "type": "registry",
+    "args": ["/S"]
+  },
+  "configuration": {
+    "type": "url",
+    "url": "http://localhost:8080/config"
+  },
+  "screenshots": ["screenshots/main.png", "screenshots/config.png"],
+  "icon": "icons/validator.png"
+}
+```
+
+### Legacy Format Example
+
+```json
+{
+  "name": "Docker Compose Validator",
   "description": "A powerful CLI tool for validating Docker Compose files with comprehensive error reporting",
   "category": "utilities/file-management",
   "subcategory": "docker-tools",
   "tags": ["docker", "validation", "cli", "yaml"],
   "repository": "https://github.com/username/docker-compose-validator",
-  "documentation": "https://username.github.io/docker-compose-validator", 
+  "documentation": "https://username.github.io/docker-compose-validator",
   "license": "MIT",
   "platforms": ["Linux", "macOS", "Windows"],
   "language": "Python",
+  "slug": "docker-compose-validator",
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "silent": true
+  },
+  "uninstallation": {
+    "type": "registry"
+  },
+  "configuration": {
+    "type": "url",
+    "url": "http://localhost:8080/config"
+  },
   "maintainer": {
     "name": "John Doe",
     "github": "johndoe",
@@ -232,7 +444,7 @@ The validation rules are defined in [`schemas/validation-rules.json`](../schemas
     "allowed_domains": [
       "github.com",
       "docs.github.com",
-      "readthedocs.io", 
+      "readthedocs.io",
       "gitbook.io"
     ],
     "required_status_codes": [200, 301, 302]
@@ -283,10 +495,21 @@ The validation rules are defined in [`schemas/validation-rules.json`](../schemas
 ### Schema Validation
 
 1. **JSON Syntax**: Valid JSON format
-2. **Required Fields**: All required fields present
-3. **Field Types**: Correct data types for each field
-4. **Field Constraints**: Length, pattern, and enum validations
-5. **Field Relationships**: Logical consistency between fields
+2. **Required Fields**: All required fields present (name, repository, slug, compatibility, installation, uninstallation, configuration)
+3. **Either/Or Fields**: Either legacy format (description, category, license) OR new format (short-description)
+4. **Field Types**: Correct data types for each field
+5. **Field Constraints**: Length, pattern, and enum validations
+6. **Field Relationships**: Logical consistency between fields
+
+### Autocompletion System
+
+The validation script includes intelligent autocompletion for legacy manifests:
+
+1. **Missing Field Detection**: Identifies missing required fields for new schema format
+2. **Repository Metrics**: Automatically fetches GitHub repository data to populate missing metrics
+3. **Smart Defaults**: Applies sensible defaults for installation, uninstallation, and configuration
+4. **Dry-Run Mode**: Preview changes before applying with `--dry-run` flag
+5. **Legacy Support**: Can be disabled with `--no-autocomplete` flag
 
 ### Extended Validation
 
@@ -294,7 +517,9 @@ The validation rules are defined in [`schemas/validation-rules.json`](../schemas
 2. **GitHub Integration**: Repository exists and is publicly accessible
 3. **License Compatibility**: License is open source and approved
 4. **Content Safety**: No forbidden words or malicious indicators
-5. **Duplicate Detection**: Tool name and repository are unique
+5. **Duplicate Detection**: Tool slug and repository are unique
+6. **Compatibility Validation**: Streaming host compatibility flags are properly set
+7. **Installation Validation**: Installation types and configurations are valid
 
 ### Quality Scoring
 
@@ -304,7 +529,7 @@ Tools receive a quality score (0-100) based on:
   - Recent commits (last 30, 90, 365 days)
   - Maintenance regularity
 
-- **Community Engagement (30%)**  
+- **Community Engagement (30%)**
   - GitHub stars
   - Fork count
   - Contributor count
@@ -321,7 +546,8 @@ Tools receive a quality score (0-100) based on:
 - **Completeness (10%)**
   - Profile completion
   - Metadata richness
-  - License compliance
+  - Streaming host compatibility
+  - Installation/configuration completeness
 
 ## 🚨 Error Messages
 
@@ -330,9 +556,17 @@ Tools receive a quality score (0-100) based on:
 **Schema Validation Errors:**
 ```
 ❌ Schema validation failed: 'name' is a required property
-❌ Schema validation failed: 'example-name!' does not match '^[a-zA-Z0-9-_]+$'
+❌ Schema validation failed: 'example-name!' does not match pattern '^[a-zA-Z0-9\\s\\-_]+$'
+❌ Schema validation failed: 'slug' does not match pattern '^[a-z0-9-]+$'
 ❌ Schema validation failed: 'description' should be at most 150 characters
 ❌ Schema validation failed: 'invalid-category' is not one of the allowed values
+❌ Schema validation failed: 'repository' does not match pattern '^https://github\\.com/[^/]+/[^/]+/?$'
+❌ Schema validation failed: 'tags[0]' does not match pattern '^[a-z0-9-]+$'
+❌ Schema validation failed: 'checksum' does not match pattern '^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$'
+❌ Schema validation failed: 'compatibility' is a required property
+❌ Schema validation failed: 'installation' is a required property
+❌ Schema validation failed: 'uninstallation' is a required property
+❌ Schema validation failed: 'configuration' is a required property
 ```
 
 **URL Validation Errors:**
@@ -351,6 +585,15 @@ Tools receive a quality score (0-100) based on:
 ⚠️ Score (45) below review threshold (50)
 ```
 
+**Autocompletion Messages:**
+```
+✅ Auto-completed missing field: slug
+✅ Auto-completed missing field: compatibility
+✅ Auto-completed missing field: installation
+ℹ️ Use --dry-run to preview autocompletion changes
+ℹ️ Use --no-autocomplete to disable autocompletion
+```
+
 ## 📊 API Schema
 
 The generated API files follow these schemas:
@@ -365,9 +608,19 @@ The generated API files follow these schemas:
   "tools": [
     {
       "id": "tool-name",
-      "name": "Tool Name", 
+      "slug": "tool-name",
+      "name": "Tool Name",
       "description": "...",
       "category": "automation/build-tools",
+      "compatibility": {
+        "sunshine": true,
+        "apollo": false,
+        "platforms": ["windows", "linux"]
+      },
+      "installation": {
+        "type": "executable",
+        "silent": true
+      },
       "verification": {
         "status": "verified",
         "score": 85
@@ -397,13 +650,19 @@ The generated API files follow these schemas:
     },
     "by_category": {
       "automation/build-tools": ["tool1", "tool2"]
+    },
+    "by_compatibility": {
+      "sunshine": ["tool1", "tool2"],
+      "apollo": ["tool3"]
     }
   },
   "filters": {
     "categories": ["automation/build-tools", "testing/unit-testing"],
     "languages": ["Python", "Go", "JavaScript"],
     "licenses": ["MIT", "Apache-2.0"],
-    "platforms": ["Linux", "Windows", "macOS"]
+    "platforms": ["Linux", "Windows", "macOS"],
+    "installation_types": ["executable", "zip", "script"],
+    "streaming_hosts": ["sunshine", "apollo"]
   }
 }
 ```
@@ -441,6 +700,9 @@ for file in schema_files:
 
 # Test against example data
 python scripts/validate.py --single examples/example-tool.json
+
+# Test with autocompletion
+python scripts/validate.py --dry-run
 
 # Test catalog generation
 python scripts/generate-catalog.py

@@ -1,0 +1,38 @@
+{
+  "name": "Apollo",
+  "slug": "apollo",
+  "category": "streaming/hosts",
+  "short-description": "Self-hosted desktop stream host for Artemis with built-in virtual display and HDR support",
+  "long-description": "Apollo is a self-hosted desktop stream host for Artemis (Moonlight Noir) offering low latency, native client resolution streaming, and cloud gaming server capabilities. Features built-in virtual display with HDR support, permission management, clipboard sync, and hardware encoding support for AMD, Intel, and Nvidia GPUs.",
+  "description": "Self-hosted desktop stream host for Artemis with built-in virtual display and HDR support",
+  "author": "ClassicOldSong",
+  "website": "",
+  "repository": "https://github.com/ClassicOldSong/Apollo",
+  "license": "GPL-3.0",
+  "tags": ["streaming", "remote-desktop", "gaming", "moonlight", "virtual-display", "hdr"],
+  "platforms": ["Windows", "Linux", "macOS"],
+  "language": "C++",
+  "compatibility": {
+    "sunshine": false,
+    "apollo": true,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "args": [],
+    "postInstall": "",
+    "checksum": ""
+  },
+  "uninstallation": {
+    "type": "executable",
+    "path": "",
+    "args": []
+  },
+  "configuration": {
+    "type": "url",
+    "url": "https://localhost:47990",
+    "file": ""
+  },
+  "screenshots": [],
+  "icon": ""
+}

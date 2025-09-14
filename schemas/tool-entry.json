@@ -4,14 +4,30 @@
   "title": "Sunshine-AIO Tool Entry",
   "description": "Schema for a tool entry in the Sunshine-AIO community library",
   "type": "object",
-  "required": ["name", "description", "category", "repository", "license"],
+  "required": [
+    "name",
+    "repository",
+    "slug",
+    "compatibility",
+    "installation",
+    "uninstallation",
+    "configuration"
+  ],
+  "anyOf": [
+    {
+      "required": ["description", "category", "license"]
+    },
+    {
+      "required": ["short-description"]
+    }
+  ],
   "properties": {
     "name": {
       "type": "string",
-      "pattern": "^[a-zA-Z0-9-_]+$",
+      "pattern": "^[a-zA-Z0-9\\s\\-_]+$",
       "minLength": 2,
       "maxLength": 50,
-      "description": "Tool name (alphanumeric, hyphens, underscores only)"
+      "description": "Tool name (alphanumeric, spaces, hyphens, underscores allowed)"
     },
     "description": {
       "type": "string",
@@ -22,18 +38,17 @@
     "category": {
       "type": "string",
       "enum": [
-        "automation/build-tools",
-        "automation/deployment", 
-        "automation/ci-cd",
-        "testing/unit-testing",
-        "testing/integration-testing",
-        "testing/performance",
-        "utilities/file-management",
-        "utilities/system-tools",
-        "utilities/network",
-        "development/debugging",
-        "development/profiling",
-        "security/scanning"
+        "streaming/hosts",
+        "streaming/clients",
+        "capture/recording",
+        "display/virtual",
+        "audio/routing",
+        "input/controllers",
+        "network/optimization",
+        "monitoring/performance",
+        "encoding/optimization",
+        "analytics/streaming",
+        "hardware/utilities"
       ],
       "description": "Tool category from predefined list"
     },
@@ -174,8 +189,321 @@
     },
     "contributed_by": {
       "type": "string",
-      "pattern": "^[a-zA-Z0-9-]+$", 
+      "pattern": "^[a-zA-Z0-9-]+$",
       "description": "GitHub username of contributor"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 2,
+      "maxLength": 50,
+      "description": "Unique identifier for the tool (lowercase, hyphens only)"
+    },
+    "short-description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 100,
+      "description": "Brief description for display purposes (with hyphens)"
+    },
+    "short_description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 100,
+      "description": "Brief description for display purposes (alternative to description)"
+    },
+    "long-description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Detailed description of the tool features and purpose (with hyphens)"
+    },
+    "long_description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Detailed description of the tool features and purpose"
+    },
+    "author": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Tool author or organization name"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Official website URL"
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "sunshine": {
+          "type": "boolean",
+          "description": "Compatible with Sunshine streaming host"
+        },
+        "apollo": {
+          "type": "boolean",
+          "description": "Compatible with Apollo streaming host"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["windows", "linux", "macos", "web"]
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Supported operating systems (lowercase)"
+        }
+      },
+      "required": ["sunshine", "apollo", "platforms"],
+      "description": "Compatibility information for streaming hosts and platforms"
+    },
+    "installation": {
+      "type": "object",
+      "oneOf": [
+        {
+          "title": "Single platform installation",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+              "description": "Installation method type"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Direct download URL (optional, defaults to latest GitHub release)"
+            },
+            "executable": {
+              "type": "string",
+              "description": "Specific executable or package name"
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Command line arguments for installation"
+            },
+            "postInstall": {
+              "type": "string",
+              "description": "Relative path to post-installation script"
+            },
+            "checksum": {
+              "type": "string",
+              "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
+              "description": "File checksum for integrity verification (empty string allowed)"
+            },
+            "silent": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether installation should run silently"
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        {
+          "title": "Multi-platform installation",
+          "properties": {
+            "platforms": {
+              "type": "object",
+              "properties": {
+                "windows": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+                      "description": "Installation method type"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Direct download URL for Windows"
+                    },
+                    "executable": {
+                      "type": "string",
+                      "description": "Windows executable name (e.g., Test.exe, Test.msi)"
+                    },
+                    "args": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Windows-specific command line arguments"
+                    },
+                    "postInstall": {
+                      "type": "string",
+                      "description": "Windows post-installation script path"
+                    },
+                    "checksum": {
+                      "type": "string",
+                      "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
+                      "description": "Windows file checksum"
+                    },
+                    "silent": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Silent installation for Windows"
+                    }
+                  },
+                  "required": ["type"],
+                  "additionalProperties": false
+                },
+                "linux": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+                      "description": "Installation method type"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Direct download URL for Linux"
+                    },
+                    "executable": {
+                      "type": "string",
+                      "description": "Linux executable name (e.g., Test.deb, Test.AppImage, Test.tar.gz)"
+                    },
+                    "args": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Linux-specific command line arguments"
+                    },
+                    "postInstall": {
+                      "type": "string",
+                      "description": "Linux post-installation script path"
+                    },
+                    "checksum": {
+                      "type": "string",
+                      "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
+                      "description": "Linux file checksum"
+                    },
+                    "silent": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Silent installation for Linux"
+                    }
+                  },
+                  "required": ["type"],
+                  "additionalProperties": false
+                },
+                "macos": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+                      "description": "Installation method type"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Direct download URL for macOS"
+                    },
+                    "executable": {
+                      "type": "string",
+                      "description": "macOS executable name (e.g., Test.dmg, Test.pkg, Test.app)"
+                    },
+                    "args": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "macOS-specific command line arguments"
+                    },
+                    "postInstall": {
+                      "type": "string",
+                      "description": "macOS post-installation script path"
+                    },
+                    "checksum": {
+                      "type": "string",
+                      "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
+                      "description": "macOS file checksum"
+                    },
+                    "silent": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Silent installation for macOS"
+                    }
+                  },
+                  "required": ["type"],
+                  "additionalProperties": false
+                }
+              },
+              "minProperties": 1,
+              "additionalProperties": false,
+              "description": "Platform-specific installation configurations"
+            }
+          },
+          "required": ["platforms"],
+          "additionalProperties": false
+        }
+      ],
+      "description": "Installation configuration - supports both single platform and multi-platform setups"
+    },
+    "uninstallation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["executable", "script", "registry", "manual"],
+          "description": "Uninstallation method type"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to uninstaller executable or script"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Command line arguments for uninstallation"
+        }
+      },
+      "required": ["type"],
+      "description": "Uninstallation configuration"
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["", "url", "file", "script", "registry", "none"],
+          "description": "Configuration method type (empty string allowed)"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Configuration interface URL"
+        },
+        "file": {
+          "type": "string",
+          "description": "Configuration file path"
+        },
+        "script": {
+          "type": "string",
+          "description": "Configuration script path"
+        }
+      },
+      "description": "Configuration options"
+    },
+    "screenshots": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Relative path to screenshot image"
+      },
+      "maxItems": 10,
+      "description": "Screenshots of the tool interface"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Relative path to tool icon image"
     }
   },
   "additionalProperties": false

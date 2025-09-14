@@ -22,7 +22,16 @@ body:
     id: tool-name
     attributes:
       label: Tool Name
-      description: The name of the tool (alphanumeric, hyphens, and underscores only)
+      description: The display name of the tool (alphanumeric, spaces, hyphens, and underscores allowed)
+      placeholder: "My Awesome Tool"
+    validations:
+      required: true
+
+  - type: input
+    id: tool-slug
+    attributes:
+      label: Tool Slug
+      description: Unique URL-friendly identifier (lowercase, hyphens only)
       placeholder: "my-awesome-tool"
     validations:
       required: true
@@ -30,32 +39,50 @@ body:
   - type: textarea
     id: tool-description
     attributes:
-      label: Description
-      description: Brief description of what this tool does (10-150 characters)
+      label: Description (Legacy Format)
+      description: Brief description for legacy format (10-150 characters, leave blank for new format)
       placeholder: "A powerful CLI tool for automating build processes with Docker support..."
     validations:
-      required: true
+      required: false
+
+  - type: textarea
+    id: short-description
+    attributes:
+      label: Short Description (New Format)
+      description: Brief description for new format (10-100 characters with hyphens allowed)
+      placeholder: "A powerful CLI tool for automating build processes with Docker support..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: long-description
+    attributes:
+      label: Long Description (Optional)
+      description: Detailed description of the tool features and purpose (max 500 characters)
+      placeholder: "Detailed explanation of features, use cases, and why this tool is valuable..."
+    validations:
+      required: false
 
   - type: dropdown
     id: category
     attributes:
-      label: Category
-      description: Select the most appropriate category for this tool
+      label: Category (Legacy Format)
+      description: Select category if using legacy format (leave blank for new format)
       options:
-        - automation/build-tools
-        - automation/deployment
-        - automation/ci-cd
-        - testing/unit-testing
-        - testing/integration-testing
-        - testing/performance
-        - utilities/file-management
-        - utilities/system-tools
-        - utilities/network
-        - development/debugging
-        - development/profiling
-        - security/scanning
+        - ""
+        - streaming/hosts
+        - streaming/clients
+        - capture/recording
+        - display/virtual
+        - audio/routing
+        - input/controllers
+        - network/optimization
+        - monitoring/performance
+        - encoding/optimization
+        - analytics/streaming
+        - hardware/utilities
     validations:
-      required: true
+      required: false
 
   - type: input
     id: subcategory
@@ -83,9 +110,10 @@ body:
   - type: dropdown
     id: license
     attributes:
-      label: License
-      description: Open source license used by this tool
+      label: License (Legacy Format)
+      description: Open source license if using legacy format (leave blank for new format)
       options:
+        - ""
         - MIT
         - Apache-2.0
         - GPL-3.0
@@ -95,7 +123,7 @@ body:
         - MPL-2.0
         - Unlicense
     validations:
-      required: true
+      required: false
 
   - type: checkboxes
     id: platforms
@@ -128,22 +156,101 @@ body:
         - Shell
         - Other
 
+  - type: checkboxes
+    id: sunshine-compatibility
+    attributes:
+      label: Sunshine Streaming Host Compatibility
+      description: Is this tool compatible with Sunshine streaming host?
+      options:
+        - label: Compatible with Sunshine
+        - label: Not compatible with Sunshine
+
+  - type: checkboxes
+    id: apollo-compatibility
+    attributes:
+      label: Apollo Streaming Host Compatibility
+      description: Is this tool compatible with Apollo streaming host?
+      options:
+        - label: Compatible with Apollo
+        - label: Not compatible with Apollo
+
+  - type: checkboxes
+    id: supported-platforms
+    attributes:
+      label: Supported Operating Systems (New Format Compatibility)
+      description: Which operating systems does this tool support? (lowercase format for compatibility.platforms)
+      options:
+        - label: windows
+        - label: linux
+        - label: macos
+        - label: web
+
+  - type: dropdown
+    id: installation-type
+    attributes:
+      label: Installation Type
+      description: How is this tool typically installed?
+      options:
+        - executable
+        - zip
+        - script
+        - msi
+        - portable
+        - package-manager
+    validations:
+      required: true
+
+  - type: dropdown
+    id: uninstallation-type
+    attributes:
+      label: Uninstallation Type
+      description: How is this tool uninstalled?
+      options:
+        - executable
+        - script
+        - registry
+        - manual
+    validations:
+      required: true
+
+  - type: dropdown
+    id: configuration-type
+    attributes:
+      label: Configuration Type
+      description: How is this tool configured? (empty string allowed)
+      options:
+        - ""
+        - url
+        - file
+        - script
+        - registry
+        - none
+    validations:
+      required: true
+
   - type: input
     id: tags
     attributes:
       label: Tags (Optional)
-      description: Comma-separated tags for better searchability (lowercase, hyphens only)
+      description: Comma-separated tags for better searchability (lowercase, hyphens only, max 8 tags, 20 chars each)
       placeholder: "docker, automation, ci-cd, deployment"
 
   - type: textarea
     id: maintainer-info
     attributes:
-      label: Maintainer Information
-      description: Information about the tool maintainer
+      label: Maintainer Information (Legacy Format)
+      description: Information about the tool maintainer for legacy format
       placeholder: |
         Name: John Doe
         GitHub: johndoe
         Contact: john@example.com (optional)
+
+  - type: input
+    id: author
+    attributes:
+      label: Author (New Format)
+      description: Tool author or organization name for new format (max 100 characters)
+      placeholder: "John Doe" or "Acme Corporation"
 
   - type: textarea
     id: additional-info
@@ -165,8 +272,8 @@ body:
           required: true
         - label: The repository has clear documentation (README with installation/usage)
           required: true
-        - label: The tool is open source with a compatible license
-          required: true
+        - label: The tool is open source with a compatible license (required for legacy format)
+          required: false
         - label: I have searched existing tools to ensure this is not a duplicate
           required: true
         - label: The repository URL is accessible and correct

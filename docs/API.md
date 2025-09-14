@@ -11,28 +11,28 @@ https://raw.githubusercontent.com/sunshine-aio/library/main/api/
 ## 📋 Available Endpoints
 
 ### Main Catalog
-**Endpoint**: `/catalog.json`  
-**Description**: Complete tool listing with full metadata  
+**Endpoint**: `/catalog.json`
+**Description**: Complete tool listing with full metadata including installation and compatibility info
 **Update Frequency**: On every main branch push
 
-### Categories Index  
-**Endpoint**: `/categories.json`  
-**Description**: Category-based organization with statistics  
+### Categories Index
+**Endpoint**: `/categories.json`
+**Description**: Category-based organization with statistics and streaming host compatibility
 **Update Frequency**: On every main branch push
 
 ### Search Index
-**Endpoint**: `/search.json`  
-**Description**: Optimized search indexes and filters  
+**Endpoint**: `/search.json`
+**Description**: Optimized search indexes and filters with platform and compatibility filters
 **Update Frequency**: On every main branch push
 
 ### Statistics
-**Endpoint**: `/stats.json`  
-**Description**: Comprehensive registry analytics  
+**Endpoint**: `/stats.json`
+**Description**: Comprehensive registry analytics including compatibility and installation metrics
 **Update Frequency**: On every main branch push
 
 ### API Manifest
-**Endpoint**: `/manifest.json`  
-**Description**: API metadata and usage information  
+**Endpoint**: `/manifest.json`
+**Description**: API metadata and usage information with autocompletion support details
 **Update Frequency**: On every main branch push
 
 ## 🔍 Detailed API Reference
@@ -50,6 +50,7 @@ The primary API containing all tools with comprehensive metadata.
   "tools": [
     {
       "id": "tool-name",
+      "slug": "tool-name",
       "name": "Tool Display Name",
       "description": "Brief description of the tool",
       "category": "automation/build-tools",
@@ -60,6 +61,25 @@ The primary API containing all tools with comprehensive metadata.
       "license": "MIT",
       "platforms": ["Linux", "macOS", "Windows"],
       "language": "Python",
+      "compatibility": {
+        "sunshine": true,
+        "apollo": false,
+        "platforms": ["windows", "linux", "macos"]
+      },
+      "installation": {
+        "type": "executable",
+        "url": "https://github.com/owner/repo/releases/latest",
+        "args": ["/S"],
+        "silent": true
+      },
+      "uninstallation": {
+        "type": "registry",
+        "args": ["/S"]
+      },
+      "configuration": {
+        "type": "url",
+        "url": "http://localhost:8080/config"
+      },
       "verification": {
         "status": "verified",
         "score": 85,
@@ -89,18 +109,32 @@ The primary API containing all tools with comprehensive metadata.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | string | Unique tool identifier (same as name) |
-| `name` | string | Tool name |
+| `id` | string | Unique tool identifier (same as slug) |
+| `slug` | string | Unique URL-friendly identifier (lowercase, hyphens only) |
+| `name` | string | Tool name (pattern: `^[a-zA-Z0-9\s\-_]+$`, 2-50 chars) |
 | `description` | string | Brief tool description |
 | `category` | string | Primary category classification |
 | `subcategory` | string | Optional subcategory |
-| `tags` | array | Search tags |
-| `repository` | string | GitHub repository URL |
+| `tags` | array | Search tags (pattern: `^[a-z0-9-]+$`, max 8 items, 20 chars each) |
+| `repository` | string | GitHub repository URL (pattern: `^https://github\.com/[^/]+/[^/]+/?$`) |
 | `documentation` | string | Documentation URL (optional) |
 | `license` | string | Open source license |
 | `platforms` | array | Supported platforms |
 | `language` | string | Primary programming language |
-| `verification.status` | string | Verification status: "verified", "pending", "failed" |
+| `compatibility.sunshine` | boolean | Compatible with Sunshine streaming host |
+| `compatibility.apollo` | boolean | Compatible with Apollo streaming host |
+| `compatibility.platforms` | array | Supported operating systems (lowercase: "windows", "linux", "macos", "web") |
+| `installation.type` | string | Installation method: "executable", "zip", "script", "msi", "portable", "package-manager" |
+| `installation.url` | string | Download URL (optional, defaults to GitHub releases) |
+| `installation.args` | array | Installation command arguments |
+| `installation.silent` | boolean | Whether installation runs silently |
+| `uninstallation.type` | string | Uninstallation method: "executable", "script", "registry", "manual" |
+| `uninstallation.path` | string | Path to uninstaller |
+| `uninstallation.args` | array | Uninstallation command arguments |
+| `configuration.type` | string | Configuration method: "", "url", "file", "script", "registry", "none" |
+| `configuration.url` | string | Configuration interface URL |
+| `configuration.file` | string | Configuration file path |
+| `verification.status` | string | Verification status: "verified", "pending", "failed", "deprecated" |
 | `verification.score` | integer | Quality score (0-100) |
 | `verification.date` | string | Last verification timestamp |
 | `metrics.stars` | integer | GitHub stars count |

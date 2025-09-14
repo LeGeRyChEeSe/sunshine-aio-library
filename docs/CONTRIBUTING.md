@@ -62,10 +62,11 @@ tools/
     └── file-management/
 ```
 
-#### Tool Entry Template
+#### Tool Entry Template (Legacy Format)
 ```json
 {
-  "name": "your-tool-name",
+  "name": "Your Tool Name",
+  "slug": "your-tool-name",
   "description": "Brief description of what the tool does (10-150 chars)",
   "category": "automation/build-tools",
   "subcategory": "docker-tools",
@@ -75,6 +76,22 @@ tools/
   "license": "MIT",
   "platforms": ["Linux", "macOS", "Windows"],
   "language": "Python",
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "silent": true
+  },
+  "uninstallation": {
+    "type": "registry"
+  },
+  "configuration": {
+    "type": "url",
+    "url": "http://localhost:8080/config"
+  },
   "maintainer": {
     "name": "Your Name",
     "github": "yourusername",
@@ -85,26 +102,76 @@ tools/
 }
 ```
 
+#### New Format Template (Recommended for New Tools)
+```json
+{
+  "name": "Your Tool Name",
+  "slug": "your-tool-name",
+  "short-description": "Brief description of what the tool does (10-100 chars)",
+  "long_description": "Detailed description with features and use cases (up to 500 chars)",
+  "tags": ["automation", "docker", "build"],
+  "repository": "https://github.com/username/repository",
+  "documentation": "https://username.github.io/repository",
+  "author": "Your Name",
+  "website": "https://your-tool.com",
+  "compatibility": {
+    "sunshine": true,
+    "apollo": false,
+    "platforms": ["windows", "linux", "macos"]
+  },
+  "installation": {
+    "type": "executable",
+    "url": "https://github.com/username/repository/releases/latest",
+    "args": ["/S"],
+    "silent": true,
+    "checksum": "sha256:abc123..."
+  },
+  "uninstallation": {
+    "type": "registry",
+    "args": ["/S"]
+  },
+  "configuration": {
+    "type": "url",
+    "url": "http://localhost:8080/config"
+  },
+  "screenshots": ["screenshots/main.png"],
+  "icon": "icons/tool.png"
+}
+```
+
 #### Field Guidelines
 
-**Required Fields:**
-- `name`: Tool name (alphanumeric, hyphens, underscores only)
-- `description`: Clear, concise description (10-150 characters)
-- `category`: One of the predefined categories (see [categories](../schemas/category.json))
-- `repository`: GitHub repository URL
-- `license`: Open source license from approved list
+**Always Required Fields:**
+- `name`: Tool name (pattern: `^[a-zA-Z0-9\s\-_]+$`, 2-50 chars)
+- `slug`: Unique URL-friendly identifier (pattern: `^[a-z0-9-]+$`, 2-50 chars)
+- `repository`: GitHub repository URL (pattern: `^https://github\.com/[^/]+/[^/]+/?$`)
+- `compatibility`: Streaming host and platform compatibility info
+- `installation`: Installation method and configuration
+- `uninstallation`: Uninstallation method and configuration
+- `configuration`: Configuration method and options
+
+**Either/Or Required (Choose Format):**
+- **Legacy Format**: `description` + `category` + `license`
+- **New Format**: `short-description`
 
 **Optional but Recommended:**
-- `subcategory`: More specific classification
-- `tags`: Search tags (lowercase, hyphens only, max 8 tags)
+- `subcategory`: More specific classification (legacy format)
+- `tags`: Search tags (pattern: `^[a-z0-9-]+$`, max 8 tags, 20 chars each)
 - `documentation`: Link to documentation
-- `platforms`: Supported operating systems
+- `platforms`: Supported operating systems (legacy format)
 - `language`: Primary programming language
-- `maintainer`: Tool maintainer information
+- `maintainer`: Tool maintainer information (legacy format)
+- `author`: Tool author name (new format)
+- `website`: Official website URL (new format)
+- `long_description`: Detailed description (new format)
+- `screenshots`: Screenshots array (new format)
+- `icon`: Tool icon path (new format)
 
 **Auto-Generated (Do Not Include):**
 - `metrics`: GitHub stats (stars, forks, etc.)
 - `verification`: Quality verification status
+- `added_date`: Date when tool was added (can be auto-completed)
+- `contributed_by`: GitHub username of contributor (can be auto-completed)
 
 ### 🏷️ Categories and Tags
 
@@ -125,7 +192,8 @@ security/scanning          - Security analysis and scanning
 ```
 
 #### Tag Best Practices
-- Use lowercase with hyphens
+- Use lowercase with hyphens only (pattern: `^[a-z0-9-]+$`)
+- Maximum 20 characters per tag
 - Be specific but not redundant with category
 - Include technology stack (e.g., "docker", "kubernetes")
 - Include use cases (e.g., "monitoring", "backup")
@@ -156,12 +224,26 @@ security/scanning          - Security analysis and scanning
 
 4. **Validate Locally**
    ```bash
+   # Set up virtual environment (Windows)
+   python -m venv venv
+   venv\Scripts\activate
+
+   # Set up virtual environment (Linux/macOS)
+   python -m venv venv
+   source venv/bin/activate
+
    # Install dependencies
    pip install jsonschema requests pyyaml
-   
-   # Validate your tool
+
+   # Validate your tool (with autocompletion)
    python scripts/validate.py --single tools/category/subcategory/your-tool.json
-   
+
+   # Preview autocompletion changes
+   python scripts/validate.py --single tools/category/subcategory/your-tool.json --dry-run
+
+   # Validate without autocompletion (legacy)
+   python scripts/validate.py --single tools/category/subcategory/your-tool.json --no-autocomplete
+
    # Verify accessibility
    python scripts/verify-tools.py --single tools/category/subcategory/your-tool.json
    ```
@@ -188,10 +270,12 @@ security/scanning          - Security analysis and scanning
 #### Review Process
 
 1. **Automated Checks**
-   - Schema validation
+   - Schema validation with new required fields
+   - Autocompletion for missing fields
    - URL accessibility testing
-   - Duplicate detection
-   - Quality scoring
+   - Duplicate detection (slug and repository)
+   - Quality scoring with compatibility metrics
+   - Streaming host compatibility validation
 
 2. **Maintainer Review**
    - Tool relevance to ecosystem
@@ -243,10 +327,12 @@ Use our [bug report template](../.github/ISSUE_TEMPLATE/bug-report.yml) for:
 
 **Minimum Standards:**
 - GitHub repository with clear README
-- Open source license
+- Open source license (for legacy format) or clear licensing info
 - Recent activity (commits within 365 days)
 - Functional installation/usage instructions
 - No malware or security risks
+- Streaming host compatibility information
+- Installation and uninstallation methods defined
 
 **Quality Indicators:**
 - GitHub stars (typically 10+ for automatic verification)
@@ -294,8 +380,18 @@ pre-commit install
 ### Useful Scripts
 
 ```bash
-# Validate all tools
+# Activate virtual environment first
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # Linux/macOS
+
+# Validate all tools with autocompletion
 python scripts/validate.py --verbose
+
+# Preview autocompletion for all tools
+python scripts/validate.py --dry-run
+
+# Validate without autocompletion (legacy mode)
+python scripts/validate.py --no-autocomplete
 
 # Validate specific tool
 python scripts/validate.py --single tools/path/to/tool.json
@@ -337,15 +433,21 @@ Before submitting, ensure:
 
 **Entry Format:**
 - [ ] JSON syntax is valid
-- [ ] All required fields present
-- [ ] Category matches predefined options
+- [ ] All required fields present (name, slug, repository, compatibility, installation, uninstallation, configuration)
+- [ ] Either legacy format (description, category, license) OR new format (short-description) fields present
+- [ ] Category matches predefined options (if using legacy format)
 - [ ] Repository URL format is correct
-- [ ] Description is clear and appropriate length
+- [ ] Slug is unique and follows pattern (`^[a-z0-9-]+$`, 2-50 chars)
+- [ ] Compatibility information is complete and accurate
+- [ ] Installation/uninstallation methods are appropriate
 
 **Testing:**
-- [ ] Local validation passes
+- [ ] Local validation passes with new schema requirements
+- [ ] Autocompletion preview looks correct (if using --dry-run)
 - [ ] Tool accessibility verified
 - [ ] No validation errors or warnings
+- [ ] Streaming host compatibility properly set
+- [ ] Installation/uninstallation/configuration methods appropriate
 - [ ] Generated catalogs look correct
 
 ## 🤔 FAQ
@@ -366,7 +468,13 @@ A: Submit a PR with changes to the existing tool file. Include justification for
 A: Yes, as long as they meet quality standards and you provide accurate information.
 
 **Q: How are API catalogs updated?**
-A: Automatically via GitHub Actions when changes are merged to main branch.
+A: Automatically via GitHub Actions when changes are merged to main branch. The new schema supports autocompletion features.
+
+**Q: What's the difference between legacy and new format?**
+A: Legacy format uses description/category/license fields, while new format uses short-description and is more flexible. Both support the new required fields (compatibility, installation, etc.).
+
+**Q: What is autocompletion and should I use it?**
+A: Autocompletion automatically fills in missing required fields for new schema format. It's recommended for legacy tools being updated. Use --dry-run to preview changes first.
 
 ## 📞 Getting Help
 

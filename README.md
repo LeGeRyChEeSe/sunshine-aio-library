@@ -1,8 +1,11 @@
 # Sunshine-AIO-Library
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Validate Tools](https://github.com/sunshine-aio/library/actions/workflows/validate-tools.yml/badge.svg)](https://github.com/sunshine-aio/library/actions/workflows/validate-tools.yml)
-[![Tools Count](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/sunshine-aio/library/main/api/stats.json&query=$.overview.total_tools&label=tools&color=blue)](https://github.com/sunshine-aio/library/blob/main/api/catalog.json)
+[![Validate Tools](https://github.com/LeGeRyChEeSe/sunshine-aio-library/actions/workflows/validate-tools.yml/badge.svg)](https://github.com/LeGeRyChEeSe/sunshine-aio-library/actions/workflows/validate-tools.yml)
+[![Tools Count](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/LeGeRyChEeSe/sunshine-aio-library/main/api/stats.json&query=$.overview.total_tools&label=tools&color=blue)](https://github.com/LeGeRyChEeSe/sunshine-aio-library/blob/main/api/catalog.json)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
+[![GitHub Issues](https://img.shields.io/github/issues/LeGeRyChEeSe/sunshine-aio-library)](https://github.com/LeGeRyChEeSe/sunshine-aio-library/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/LeGeRyChEeSe/sunshine-aio-library)](https://github.com/LeGeRyChEeSe/sunshine-aio-library/stargazers)
 
 A curated, community-driven registry of high-quality tools for the Sunshine-AIO ecosystem.
 
@@ -52,8 +55,8 @@ if (-not (Test-Path "venv")) {
 # Activate virtual environment
 venv\Scripts\Activate.ps1
 
-# Install dependencies
-pip install jsonschema requests pyyaml
+# Install dependencies from requirements.txt
+pip install -r requirements.txt
 ```
 
 *On Linux/macOS:*
@@ -66,8 +69,8 @@ fi
 # Activate virtual environment
 source venv/bin/activate
 
-# Install dependencies
-pip install jsonschema requests pyyaml
+# Install dependencies from requirements.txt
+pip install -r requirements.txt
 ```
 
 **Step 3: Verify installation**

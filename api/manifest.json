@@ -1,30 +1,30 @@
 {
   "version": "1.0.0",
-  "generated": "2025-09-14T20:45:56.607665",
+  "generated": "2025-09-20T06:39:02.929871",
   "catalogs": {
     "catalog.json": {
       "path": "api/catalog.json",
-      "size_bytes": 1072,
-      "size_kb": 1.0,
-      "last_modified": "2025-09-14T20:45:56.606057"
+      "size_bytes": 2225,
+      "size_kb": 2.2,
+      "last_modified": "2025-09-20T06:39:02.928087"
     },
     "search.json": {
       "path": "api/search.json",
-      "size_bytes": 1820,
+      "size_bytes": 1821,
       "size_kb": 1.8,
-      "last_modified": "2025-09-14T20:45:56.606057"
+      "last_modified": "2025-09-20T06:39:02.928087"
     },
     "stats.json": {
       "path": "api/stats.json",
-      "size_bytes": 1246,
+      "size_bytes": 1250,
       "size_kb": 1.2,
-      "last_modified": "2025-09-14T20:45:56.606057"
+      "last_modified": "2025-09-20T06:39:02.928087"
     },
     "categories.json": {
       "path": "api/categories.json",
-      "size_bytes": 774,
+      "size_bytes": 777,
       "size_kb": 0.8,
-      "last_modified": "2025-09-14T20:45:56.606057"
+      "last_modified": "2025-09-20T06:39:02.928087"
     }
   },
   "api_endpoints": {

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2025-09-20T08:27:21.328609",
+  "generated": "2025-09-20T06:39:02.928814",
   "total_tools": 1,
   "tools": [
     {
@@ -76,10 +76,10 @@
         ]
       },
       "_metadata": {
-        "file_path": "streaming\\hosts\\apollo\\manifest.json",
+        "file_path": "streaming/hosts/apollo/manifest.json",
         "category_path": "streaming/hosts/apollo",
         "file_name": "manifest.json",
-        "last_modified": "2025-09-19T21:37:26.133202"
+        "last_modified": "2025-09-20T06:38:54.771983"
       }
     }
   ]

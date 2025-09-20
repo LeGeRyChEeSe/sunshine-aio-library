@@ -41,7 +41,7 @@ class CatalogGenerator:
                 tools.append(tool_data)
                 
             except Exception as e:
-                print(f"⚠️ Error loading {tool_file}: {e}")
+                print(f"[WARNING] Error loading {tool_file}: {e}")
                 continue
         
         return tools
@@ -72,8 +72,16 @@ class CatalogGenerator:
                 "verification": {
                     "status": tool.get("verification", {}).get("status", "pending"),
                     "score": tool.get("verification", {}).get("score", 0),
-                    "date": tool.get("verification", {}).get("date")
+                    "date": tool.get("verification", {}).get("date"),
+                    "method": tool.get("verification", {}).get("method")
                 },
+                "validation": {
+                    "checksum_required": tool.get("validation", {}).get("checksum_required", False),
+                    "signature_verification": tool.get("validation", {}).get("signature_verification", False),
+                    "trust_level": tool.get("validation", {}).get("trust_level", "unverified"),
+                    "auto_update": tool.get("validation", {}).get("auto_update", True)
+                },
+                "installation": self._extract_installation_info(tool.get("installation", {})),
                 "metrics": {
                     "stars": tool.get("metrics", {}).get("stars", 0),
                     "forks": tool.get("metrics", {}).get("forks", 0),
@@ -83,6 +91,7 @@ class CatalogGenerator:
                     "name": tool.get("maintainer", {}).get("name"),
                     "github": tool.get("maintainer", {}).get("github")
                 },
+                "compatibility": tool.get("compatibility", {}),
                 "added_date": tool.get("added_date"),
                 "contributed_by": tool.get("contributed_by"),
                 "_metadata": tool.get("_metadata", {})
@@ -429,7 +438,36 @@ class CatalogGenerator:
                 del tool["last_commit_date"]
         
         return stats
-    
+
+    def _extract_installation_info(self, installation_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract and normalize installation information for catalog."""
+        if not installation_data:
+            return {}
+
+        # Handle both old single-platform format and new multi-platform format
+        if "platforms" in installation_data:
+            # New multi-platform format
+            platforms_info = {}
+            for platform, platform_data in installation_data["platforms"].items():
+                platforms_info[platform] = {
+                    "type": platform_data.get("type", "executable"),
+                    "download_strategy": platform_data.get("download_strategy", "github_releases"),
+                    "file_pattern": platform_data.get("file_pattern"),
+                    "requires_admin": platform_data.get("requires_admin", False),
+                    "silent": platform_data.get("silent", True),
+                    "checksum_verification": platform_data.get("checksum_verification", True)
+                }
+            return {"platforms": platforms_info}
+        else:
+            # Old single-platform format - convert to new format
+            return {
+                "type": installation_data.get("type", "executable"),
+                "download_strategy": "github_releases",  # Default for old format
+                "requires_admin": False,  # Default for old format
+                "silent": installation_data.get("silent", True),
+                "checksum_verification": bool(installation_data.get("checksum"))
+            }
+
     def _clean_dict(self, d: Any) -> Any:
         """Recursively remove None values from dictionary."""
         if isinstance(d, dict):
@@ -441,14 +479,14 @@ class CatalogGenerator:
     
     def generate_all_catalogs(self) -> Dict[str, str]:
         """Generate all catalog files."""
-        print("📊 Loading tools...")
+        print("[INFO] Loading tools...")
         tools = self.load_all_tools()
         
         if not tools:
-            print("⚠️ No tools found!")
+            print("[WARNING] No tools found!")
             return {}
         
-        print(f"📈 Generating catalogs for {len(tools)} tools...")
+        print(f"[INFO] Generating catalogs for {len(tools)} tools...")
         
         # Generate all catalogs
         catalogs = {
@@ -469,10 +507,10 @@ class CatalogGenerator:
                 # Calculate file size
                 size_kb = output_path.stat().st_size / 1024
                 files_written[filename] = f"{output_path} ({size_kb:.1f} KB)"
-                print(f"✅ Generated {filename} ({size_kb:.1f} KB)")
+                print(f"[SUCCESS] Generated {filename} ({size_kb:.1f} KB)")
                 
             except Exception as e:
-                print(f"❌ Failed to write {filename}: {e}")
+                print(f"[ERROR] Failed to write {filename}: {e}")
         
         return files_written
     
@@ -508,7 +546,7 @@ class CatalogGenerator:
                         "last_modified": datetime.fromtimestamp(stat.st_mtime).isoformat()
                     }
                 except Exception as e:
-                    print(f"⚠️ Error getting metadata for {api_file}: {e}")
+                    print(f"[WARNING] Error getting metadata for {api_file}: {e}")
         
         # Write manifest
         manifest_path = self.api_dir / "manifest.json"
@@ -536,25 +574,25 @@ def main():
         files_written = generator.generate_all_catalogs()
         
         if not files_written:
-            print("❌ No catalog files generated")
+            print("[ERROR] No catalog files generated")
             sys.exit(1)
         
         # Generate manifest if requested
         if args.manifest:
             manifest = generator.generate_manifest()
-            print(f"✅ Generated manifest.json")
+            print(f"[SUCCESS] Generated manifest.json")
         
-        print(f"\n🎉 Generated {len(files_written)} catalog files:")
+        print(f"\n[SUCCESS] Generated {len(files_written)} catalog files:")
         for filename, path_info in files_written.items():
-            print(f"  📄 {path_info}")
+            print(f"  - {path_info}")
         
-        print(f"\n📁 API directory: {generator.api_dir}")
+        print(f"\n[INFO] API directory: {generator.api_dir}")
         
     except KeyboardInterrupt:
-        print("\n⏹️ Catalog generation interrupted")
+        print("\n[INFO] Catalog generation interrupted")
         sys.exit(1)
     except Exception as e:
-        print(f"\n💥 Unexpected error: {e}")
+        print(f"\n[ERROR] Unexpected error: {e}")
         sys.exit(1)
 
 

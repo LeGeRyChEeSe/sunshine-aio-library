@@ -148,7 +148,79 @@ class ToolValidator:
                     warnings.append(f"[WARNING] Contains potentially unsafe word: '{word}'")
         
         return warnings
-    
+
+    def validate_installation_metadata(self, tool_data: Dict[str, Any], repo_metrics: Dict[str, Any]) -> List[str]:
+        """Validate installation metadata and check GitHub releases compatibility."""
+        errors = []
+        installation = tool_data.get("installation", {})
+
+        if not installation:
+            errors.append("[ERROR] Missing installation metadata")
+            return errors
+
+        # Handle both old and new format
+        if "platforms" in installation:
+            # New multi-platform format
+            platforms = installation["platforms"]
+            if not platforms:
+                errors.append("[ERROR] Empty platforms configuration")
+                return errors
+
+            # Check if repository has releases for download_strategy validation
+            repo_url = tool_data.get("repository", "")
+            releases_info = None
+            if repo_url and "github.com" in repo_url:
+                try:
+                    match = re.match(r'https://github\.com/([^/]+)/([^/]+)/?$', repo_url)
+                    if match:
+                        owner, repo = match.groups()
+                        releases_info = self._get_github_releases_info(owner, repo)
+                except Exception:
+                    pass
+
+            # Validate each platform configuration
+            for platform, config in platforms.items():
+                platform_prefix = f"[{platform.upper()}]"
+
+                # Required fields
+                if not config.get("type"):
+                    errors.append(f"{platform_prefix} Missing installation type")
+
+                # Validate download strategy
+                download_strategy = config.get("download_strategy", "github_releases")
+                if download_strategy == "github_releases":
+                    if not releases_info or not releases_info.get("has_releases"):
+                        errors.append(f"{platform_prefix} GitHub releases strategy specified but no releases found")
+                    else:
+                        # Check if file pattern would match available assets
+                        file_pattern = config.get("file_pattern")
+                        if file_pattern and releases_info.get("platform_assets"):
+                            platform_assets = releases_info["platform_assets"].get(platform.lower(), {})
+                            if not platform_assets:
+                                errors.append(f"{platform_prefix} No assets found for platform despite file pattern: {file_pattern}")
+
+                # Validate installation flags for silent installation
+                if config.get("silent", True):
+                    install_flags = config.get("install_flags", [])
+                    if not install_flags and config.get("type") in ["executable", "msi"]:
+                        errors.append(f"{platform_prefix} Silent installation enabled but no install_flags specified")
+
+                # Validate checksum configuration
+                if config.get("checksum_verification", True):
+                    checksum = config.get("checksum", "")
+                    if not checksum:
+                        errors.append(f"{platform_prefix} Checksum verification enabled but no checksum provided")
+
+        else:
+            # Old single-platform format - warn about deprecation
+            errors.append("[WARNING] Using deprecated single-platform installation format. Consider upgrading to multi-platform format.")
+
+            # Basic validation for old format
+            if not installation.get("type"):
+                errors.append("[ERROR] Missing installation type")
+
+        return errors
+
     def calculate_quality_score(self, tool_data: Dict[str, Any], metrics: Dict[str, Any]) -> int:
         """Calculate quality score based on various metrics."""
         weights = self.validation_rules["properties"]["scoring_weights"]["properties"]
@@ -556,7 +628,7 @@ class ToolValidator:
 
         return verification_results
 
-    def _find_matching_assets(self, pattern: str, assets: List[Dict[str, Any]], platform: str = None) -> List[Dict[str, Any]]:
+    def _find_matching_assets(self, pattern: str, assets: List[Dict[str, Any]], platform: Optional[str] = None) -> List[Dict[str, Any]]:
         """Find assets that match the given executable pattern."""
         if not pattern or not assets:
             return []
@@ -869,6 +941,20 @@ class ToolValidator:
                 return results
 
             results["warnings"].append(repo_status)
+
+            # Installation metadata validation
+            installation_errors = self.validate_installation_metadata(tool_data, repo_metrics)
+            if installation_errors:
+                # Separate errors and warnings
+                for error in installation_errors:
+                    if error.startswith("[ERROR]"):
+                        results["errors"].append(error)
+                    else:
+                        results["warnings"].append(error)
+
+                # Return early if there are critical errors
+                if any(error.startswith("[ERROR]") for error in installation_errors):
+                    return results
 
             # Verify executable patterns work with actual releases
             if tool_data.get("installation"):

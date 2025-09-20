@@ -182,6 +182,33 @@
       },
       "description": "Verification and quality information"
     },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "checksum_required": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether checksum verification is required for this tool"
+        },
+        "signature_verification": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether digital signature verification is required"
+        },
+        "trust_level": {
+          "type": "string",
+          "enum": ["unverified", "community_verified", "maintainer_verified", "official"],
+          "default": "unverified",
+          "description": "Trust level for this tool"
+        },
+        "auto_update": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether this tool supports automatic updates"
+        }
+      },
+      "description": "Validation and security configuration"
+    },
     "added_date": {
       "type": "string",
       "format": "date",
@@ -320,6 +347,16 @@
                       "format": "uri",
                       "description": "Direct download URL for Windows"
                     },
+                    "download_strategy": {
+                      "type": "string",
+                      "enum": ["direct_url", "github_releases", "github_latest", "package_manager"],
+                      "default": "github_releases",
+                      "description": "Strategy for downloading the installer"
+                    },
+                    "file_pattern": {
+                      "type": "string",
+                      "description": "Pattern to match release files (e.g., '*.exe', '*Setup.msi')"
+                    },
                     "executable": {
                       "type": "string",
                       "description": "Windows executable name (e.g., Test.exe, Test.msi)"
@@ -331,6 +368,22 @@
                       },
                       "description": "Windows-specific command line arguments"
                     },
+                    "install_flags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Silent installation flags (e.g., ['/S', '/SILENT', '/VERYSILENT'])"
+                    },
+                    "install_dir_flag": {
+                      "type": "string",
+                      "description": "Flag to specify installation directory (e.g., '/DIR=')"
+                    },
+                    "requires_admin": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether installation requires administrator privileges"
+                    },
                     "postInstall": {
                       "type": "string",
                       "description": "Windows post-installation script path"
@@ -339,6 +392,11 @@
                       "type": "string",
                       "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
                       "description": "Windows file checksum"
+                    },
+                    "checksum_verification": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Whether to verify file integrity using checksum"
                     },
                     "silent": {
                       "type": "boolean",
@@ -354,13 +412,23 @@
                   "properties": {
                     "type": {
                       "type": "string",
-                      "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+                      "enum": ["executable", "zip", "script", "deb", "rpm", "appimage", "portable", "package-manager"],
                       "description": "Installation method type"
                     },
                     "url": {
                       "type": "string",
                       "format": "uri",
                       "description": "Direct download URL for Linux"
+                    },
+                    "download_strategy": {
+                      "type": "string",
+                      "enum": ["direct_url", "github_releases", "github_latest", "package_manager"],
+                      "default": "github_releases",
+                      "description": "Strategy for downloading the installer"
+                    },
+                    "file_pattern": {
+                      "type": "string",
+                      "description": "Pattern to match release files (e.g., '*.AppImage', '*.deb', '*.tar.gz')"
                     },
                     "executable": {
                       "type": "string",
@@ -373,6 +441,18 @@
                       },
                       "description": "Linux-specific command line arguments"
                     },
+                    "install_flags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Silent installation flags (e.g., ['-y', '--silent', '--force'])"
+                    },
+                    "requires_admin": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether installation requires sudo privileges"
+                    },
                     "postInstall": {
                       "type": "string",
                       "description": "Linux post-installation script path"
@@ -381,6 +461,11 @@
                       "type": "string",
                       "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
                       "description": "Linux file checksum"
+                    },
+                    "checksum_verification": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Whether to verify file integrity using checksum"
                     },
                     "silent": {
                       "type": "boolean",
@@ -396,13 +481,23 @@
                   "properties": {
                     "type": {
                       "type": "string",
-                      "enum": ["executable", "zip", "script", "msi", "portable", "package-manager"],
+                      "enum": ["executable", "zip", "script", "dmg", "pkg", "app", "portable", "package-manager"],
                       "description": "Installation method type"
                     },
                     "url": {
                       "type": "string",
                       "format": "uri",
                       "description": "Direct download URL for macOS"
+                    },
+                    "download_strategy": {
+                      "type": "string",
+                      "enum": ["direct_url", "github_releases", "github_latest", "package_manager"],
+                      "default": "github_releases",
+                      "description": "Strategy for downloading the installer"
+                    },
+                    "file_pattern": {
+                      "type": "string",
+                      "description": "Pattern to match release files (e.g., '*.dmg', '*.pkg', '*.app')"
                     },
                     "executable": {
                       "type": "string",
@@ -415,6 +510,18 @@
                       },
                       "description": "macOS-specific command line arguments"
                     },
+                    "install_flags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Silent installation flags (e.g., ['-allowUntrusted', '--silent'])"
+                    },
+                    "requires_admin": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether installation requires administrator privileges"
+                    },
                     "postInstall": {
                       "type": "string",
                       "description": "macOS post-installation script path"
@@ -423,6 +530,11 @@
                       "type": "string",
                       "pattern": "^(|sha256:[a-fA-F0-9]+|md5:[a-fA-F0-9]+|sha1:[a-fA-F0-9]+)$",
                       "description": "macOS file checksum"
+                    },
+                    "checksum_verification": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Whether to verify file integrity using checksum"
                     },
                     "silent": {
                       "type": "boolean",

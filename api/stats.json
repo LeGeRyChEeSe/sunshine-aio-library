@@ -1,14 +1,14 @@
 {
   "version": "1.0.0",
-  "generated": "2025-09-14T20:45:56.606741",
+  "generated": "2025-09-20T08:27:21.328683",
   "overview": {
     "total_tools": 1,
-    "verified_tools": 0,
-    "pending_tools": 1,
+    "verified_tools": 1,
+    "pending_tools": 0,
     "failed_tools": 0,
     "total_stars": 0,
     "total_forks": 0,
-    "average_score": 0.0
+    "average_score": 85.0
   },
   "categories": {
     "streaming/hosts": {
@@ -32,13 +32,13 @@
     "macOS": 1
   },
   "verification_statuses": {
-    "pending": 1
+    "verified": 1
   },
   "quality_distribution": {
     "excellent": 0,
-    "good": 0,
+    "good": 1,
     "fair": 0,
-    "poor": 1
+    "poor": 0
   },
   "activity_analysis": {
     "active": 0,
@@ -52,7 +52,7 @@
         "name": "Apollo",
         "category": "streaming/hosts",
         "stars": 0,
-        "score": 0,
+        "score": 85,
         "last_commit": null
       }
     ],
@@ -62,7 +62,7 @@
         "name": "Apollo",
         "category": "streaming/hosts",
         "stars": 0,
-        "score": 0,
+        "score": 85,
         "last_commit": null
       }
     ],

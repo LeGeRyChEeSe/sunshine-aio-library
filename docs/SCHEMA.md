@@ -1,8 +1,8 @@
-# 📋 Schema Reference
+# Schema Reference
 
 This document provides detailed information about the JSON schemas used in the Sunshine-AIO Community Tools Registry.
 
-## 📄 Tool Entry Schema
+## Tool Entry Schema
 
 The main schema for tool entries is defined in [`schemas/tool-entry.json`](../schemas/tool-entry.json).
 
@@ -58,7 +58,7 @@ The main schema for tool entries is defined in [`schemas/tool-entry.json`](../sc
 #### `installation` (object)
 The installation object supports both single-platform and multi-platform configurations:
 
-**Single Platform Format:**
+**Single Platform Format (Legacy):**
 - `type` (string, required): Installation method
   - **Enum**: `"executable"`, `"zip"`, `"script"`, `"msi"`, `"portable"`, `"package-manager"`
 - `url` (string): Direct download URL (defaults to latest GitHub release)
@@ -68,13 +68,29 @@ The installation object supports both single-platform and multi-platform configu
 - `checksum` (string): File checksum for integrity verification (empty string allowed)
 - `silent` (boolean): Whether installation should run silently (default: true)
 
-**Multi-Platform Format:**
+**Multi-Platform Format (Recommended):**
 - `platforms` (object, required): Platform-specific configurations
   - `windows` (object): Windows installation configuration
   - `linux` (object): Linux installation configuration
   - `macos` (object): macOS installation configuration
 
-Each platform object supports the same properties as the single platform format.
+Each platform object supports the following properties:
+- `type` (string, required): Installation method
+  - **Windows**: `"executable"`, `"msi"`, `"zip"`, `"script"`, `"portable"`, `"package-manager"`
+  - **Linux**: `"deb"`, `"rpm"`, `"appimage"`, `"zip"`, `"script"`, `"portable"`, `"package-manager"`
+  - **macOS**: `"dmg"`, `"pkg"`, `"app"`, `"zip"`, `"script"`, `"portable"`, `"package-manager"`
+- `download_strategy` (string): Strategy for downloading files
+  - **Enum**: `"direct_url"`, `"github_releases"`, `"github_latest"`, `"package_manager"`
+  - **Default**: `"github_releases"`
+- `file_pattern` (string): Pattern to match release files (e.g., `"*.exe"`, `"*.AppImage"`)
+- `url` (string): Direct download URL
+- `executable` (string): Executable name
+- `install_flags` (array): Silent installation flags (e.g., `["/S", "/SILENT"]`)
+- `install_dir_flag` (string): Flag to specify installation directory (e.g., `"/DIR="`)
+- `requires_admin` (boolean): Whether installation requires admin privileges
+- `checksum_verification` (boolean): Whether to verify file integrity
+- `checksum` (string): File checksum for verification
+- `silent` (boolean): Whether installation should run silently
 
 **Important**: For dynamic updates, use GitHub's latest release URLs without version numbers:
 - `https://github.com/user/repo/releases/latest/download/Tool-Windows.exe`
@@ -96,25 +112,32 @@ Each platform object supports the same properties as the single platform format.
 {
   "platforms": {
     "windows": {
-      "type": "msi",
-      "url": "https://github.com/user/repo/releases/latest/download/Tool-Windows.msi",
-      "executable": "Tool.msi",
-      "args": ["/quiet"],
+      "type": "executable",
+      "download_strategy": "github_releases",
+      "file_pattern": "*.exe",
+      "install_flags": ["/S", "/SILENT", "/VERYSILENT"],
+      "install_dir_flag": "/DIR=",
+      "requires_admin": true,
+      "checksum_verification": true,
       "silent": true
     },
     "linux": {
-      "type": "package-manager",
-      "url": "https://github.com/user/repo/releases/latest/download/Tool-Linux.deb",
-      "executable": "Tool.deb",
-      "args": ["--force-yes"],
+      "type": "appimage",
+      "download_strategy": "github_releases",
+      "file_pattern": "*.AppImage",
+      "install_flags": ["--silent"],
+      "requires_admin": false,
+      "checksum_verification": true,
       "silent": true
     },
     "macos": {
-      "type": "portable",
-      "url": "https://github.com/user/repo/releases/latest/download/Tool-macOS.dmg",
-      "executable": "Tool.dmg",
-      "args": [],
-      "silent": false
+      "type": "dmg",
+      "download_strategy": "github_releases",
+      "file_pattern": "*.dmg",
+      "install_flags": ["-allowUntrusted"],
+      "requires_admin": false,
+      "checksum_verification": true,
+      "silent": true
     }
   }
 }
@@ -205,6 +228,24 @@ You must provide either the legacy format OR the new format:
   ```
 
 ### Optional Fields
+
+#### `verification` (object)
+Advanced verification and quality information:
+- `status` (string): Verification status
+  - **Enum**: `"pending"`, `"verified"`, `"failed"`, `"deprecated"`
+  - **Default**: `"pending"`
+- `date` (string): Last verification date (ISO format)
+- `method` (string): Verification method
+  - **Enum**: `"automated"`, `"manual"`, `"community"`
+- `score` (integer): Quality score (0-100)
+
+#### `validation` (object)
+Security and validation configuration:
+- `checksum_required` (boolean): Whether checksum verification is required
+- `signature_verification` (boolean): Whether digital signature verification is required
+- `trust_level` (string): Trust level for this tool
+  - **Enum**: `"unverified"`, `"community_verified"`, `"maintainer_verified"`, `"official"`
+- `auto_update` (boolean): Whether this tool supports automatic updates
 
 #### `subcategory` (string)
 - **Max Length**: 30 characters

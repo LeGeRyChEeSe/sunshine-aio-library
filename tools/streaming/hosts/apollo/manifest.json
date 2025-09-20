@@ -17,11 +17,48 @@
     "apollo": true,
     "platforms": ["windows", "linux", "macos"]
   },
+  "verification": {
+    "status": "verified",
+    "date": "2025-09-19T00:00:00Z",
+    "method": "automated",
+    "score": 85
+  },
+  "validation": {
+    "checksum_required": false,
+    "signature_verification": false,
+    "trust_level": "community_verified",
+    "auto_update": true
+  },
   "installation": {
-    "type": "executable",
-    "args": [],
-    "postInstall": "",
-    "checksum": ""
+    "platforms": {
+      "windows": {
+        "type": "script",
+        "download_strategy": "direct_url",
+        "url": "https://github.com/ClassicOldSong/Apollo/archive/refs/heads/master.zip",
+        "install_flags": ["--build", "--install"],
+        "requires_admin": true,
+        "checksum_verification": false,
+        "silent": true
+      },
+      "linux": {
+        "type": "script",
+        "download_strategy": "direct_url",
+        "url": "https://github.com/ClassicOldSong/Apollo/archive/refs/heads/master.zip",
+        "install_flags": ["--build", "--install"],
+        "requires_admin": false,
+        "checksum_verification": false,
+        "silent": true
+      },
+      "macos": {
+        "type": "script",
+        "download_strategy": "direct_url",
+        "url": "https://github.com/ClassicOldSong/Apollo/archive/refs/heads/master.zip",
+        "install_flags": ["--build", "--install"],
+        "requires_admin": false,
+        "checksum_verification": false,
+        "silent": true
+      }
+    }
   },
   "uninstallation": {
     "type": "executable",

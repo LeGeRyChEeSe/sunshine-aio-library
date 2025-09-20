@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2025-09-14T20:45:56.606671",
+  "generated": "2025-09-20T08:27:21.328609",
   "total_tools": 1,
   "tools": [
     {
@@ -25,19 +25,61 @@
       ],
       "language": "C++",
       "verification": {
-        "status": "pending",
-        "score": 0
+        "status": "verified",
+        "score": 85,
+        "date": "2025-09-19T00:00:00Z",
+        "method": "automated"
+      },
+      "validation": {
+        "checksum_required": false,
+        "signature_verification": false,
+        "trust_level": "community_verified",
+        "auto_update": true
+      },
+      "installation": {
+        "platforms": {
+          "windows": {
+            "type": "script",
+            "download_strategy": "direct_url",
+            "requires_admin": true,
+            "silent": true,
+            "checksum_verification": false
+          },
+          "linux": {
+            "type": "script",
+            "download_strategy": "direct_url",
+            "requires_admin": false,
+            "silent": true,
+            "checksum_verification": false
+          },
+          "macos": {
+            "type": "script",
+            "download_strategy": "direct_url",
+            "requires_admin": false,
+            "silent": true,
+            "checksum_verification": false
+          }
+        }
       },
       "metrics": {
         "stars": 0,
         "forks": 0
       },
       "maintainer": {},
+      "compatibility": {
+        "sunshine": false,
+        "apollo": true,
+        "platforms": [
+          "windows",
+          "linux",
+          "macos"
+        ]
+      },
       "_metadata": {
-        "file_path": "streaming/hosts/apollo/manifest.json",
+        "file_path": "streaming\\hosts\\apollo\\manifest.json",
         "category_path": "streaming/hosts/apollo",
         "file_name": "manifest.json",
-        "last_modified": "2025-09-14T20:45:48.509915"
+        "last_modified": "2025-09-19T21:37:26.133202"
       }
     }
   ]

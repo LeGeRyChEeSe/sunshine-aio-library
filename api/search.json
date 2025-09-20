@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2025-09-14T20:45:56.606715",
+  "generated": "2025-09-20T08:27:21.328662",
   "indexes": {
     "by_name": {
       "apollo": [
@@ -117,7 +117,7 @@
       "virtual-display"
     ],
     "verification_statuses": [
-      "pending"
+      "verified"
     ]
   }
 }
